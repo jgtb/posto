@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d53f5204e9d534614fcd97849ee6f8b5",
+    "content-hash": "6cf23c523432ecf0048104c59b2e92f8",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -193,6 +193,45 @@
             ]
         },
         {
+            "name": "bower-asset/nprogress",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rstacruz/nprogress.git",
+                "reference": "254266ea50c220f6507fa3f2978fc530147c7f06"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rstacruz/nprogress/zipball/254266ea50c220f6507fa3f2978fc530147c7f06",
+                "reference": "254266ea50c220f6507fa3f2978fc530147c7f06",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "nprogress.js",
+                    "nprogress.css"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "components",
+                    "package.json",
+                    "test",
+                    "vendor"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "slim progress bar",
+            "keywords": [
+                "bar",
+                "progress",
+                "spinner"
+            ]
+        },
+        {
             "name": "bower-asset/punycode",
             "version": "v1.3.2",
             "source": {
@@ -313,6 +352,50 @@
                 "markdown-extra"
             ],
             "time": "2016-09-14T20:40:20+00:00"
+        },
+        {
+            "name": "edgardmessias/yii2-nprogress",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/edgardmessias/yii2-nprogress.git",
+                "reference": "fdff230f40e3ee0299db506895106e0a121e1e37"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/edgardmessias/yii2-nprogress/zipball/fdff230f40e3ee0299db506895106e0a121e1e37",
+                "reference": "fdff230f40e3ee0299db506895106e0a121e1e37",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/nprogress": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "edgardmessias\\assets\\nprogress\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Edgard Messias",
+                    "email": "edgardmessias@gmail.com"
+                }
+            ],
+            "description": "Slim progress bars for Ajax'y applications. Inspired by Google, YouTube, and Medium for Yii2 Framework.",
+            "keywords": [
+                "assets",
+                "extension",
+                "nprogress",
+                "pjax",
+                "yii2"
+            ],
+            "time": "2015-08-19T20:01:09+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",

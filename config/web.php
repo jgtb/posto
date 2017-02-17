@@ -13,6 +13,19 @@ $config = [
         ]
     ],
     'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'edgardmessias\assets\nprogress\NProgressAsset' => [
+                    'configuration' => [
+                        'minimum' => 0.08,
+                        'showSpinner' => true,
+                    ],
+                    'page_loading' => true,
+                    'pjax_events' => true,
+                    'jquery_ajax_events' => true,
+                ],
+            ],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'l-Rsu9ih-sqbjj-xsJH8ci5_kJCNKiZP',
@@ -37,7 +50,7 @@ $config = [
                 'port' => '587',
                 'encryption' => 'tls',
             ],
-            //'useFileTransport' => true,
+        //'useFileTransport' => true,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
