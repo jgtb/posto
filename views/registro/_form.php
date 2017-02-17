@@ -60,7 +60,7 @@ use app\models\BicoRegistro;
                         'name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][registro_anterior]',
                         'class' => 'registro-anterior form-control',
                         'value' => $model->isNewRecord ? BicoRegistro::find()->leftJoin('registro', 'bico_registro.registro_id = registro.registro_id')->where(['bico_registro.bico_id' => $modelBicoRegistro->bico_id, 'registro.posto_id' => Yii::$app->user->identity->posto_id])->orderBy(['registro.registro_id' => SORT_DESC])->one()->registro_atual : NULL,
-                        'disabled' => !$model->isNewRecord || BicoRegistro::find()->leftJoin('registro', 'bico_registro.registro_id = registro.registro_id')->where(['bico_registro.bico_id' => $modelBicoRegistro->bico_id, 'registro.posto_id' => Yii::$app->user->identity->posto_id])->orderBy(['registro.registro_id' => SORT_DESC])->one()->registro_atual != NULL ? true : false,
+                        'readonly' => !$model->isNewRecord || BicoRegistro::find()->leftJoin('registro', 'bico_registro.registro_id = registro.registro_id')->where(['bico_registro.bico_id' => $modelBicoRegistro->bico_id, 'registro.posto_id' => Yii::$app->user->identity->posto_id])->orderBy(['registro.registro_id' => SORT_DESC])->one()->registro_atual != NULL ? true : false,
                             ]
                     );
                     ?>

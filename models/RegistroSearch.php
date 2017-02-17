@@ -29,7 +29,7 @@ class RegistroSearch extends Registro {
                 ->leftJoin('bomba', 'bico.bomba_id = bomba.bomba_id')
                 ->leftJoin('tipo_combustivel', 'bico.tipo_combustivel_id = tipo_combustivel.tipo_combustivel_id')
                 ->where(['registro.posto_id' => Yii::$app->user->identity->posto_id, 'registro.status' => 1])
-                ->orderBy(['registro.registro_id' => SORT_ASC, 'bico.descricao' => SORT_ASC, 'registro.data' => SORT_ASC]);
+                ->orderBy(['registro.registro_id' => SORT_ASC, 'bico.descricao' => SORT_ASC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
