@@ -116,7 +116,7 @@ class ProdutoNegociacao extends \yii\db\ActiveRecord {
             'produto_negociacao_id' => 'Produto Negociacao ID',
             'produto_id' => 'Produto',
             'negociacao_id' => 'Negociacao ID',
-            'valor' => 'Valor',
+            'valor' => 'Valor Litro #Unidade',
             'qtde' => 'Quantidade',
             'nota_fiscal' => 'Nota Fiscal',
             'data' => 'Data',

@@ -67,7 +67,7 @@ class Registro extends \yii\db\ActiveRecord {
                 ->leftJoin('bico', 'bico_registro.bico_id = bico.bico_id')
                 ->where(['bico.tipo_combustivel_id' => 2, 'registro.posto_id' => Yii::$app->user->identity->posto_id])
                 ->sum('bico_registro.registro_atual - bico_registro.registro_anterior');
-        
+
         $qtdeVendaDieselRetorno = BicoRegistro::find()
                 ->leftJoin('registro', 'bico_registro.registro_id = registro.registro_id')
                 ->leftJoin('bico', 'bico_registro.bico_id = bico.bico_id')
@@ -81,4 +81,23 @@ class Registro extends \yii\db\ActiveRecord {
         return $result;
     }
 
+    public function deleteRegistros() {
+        $modelsRegistro = Registro::find()
+                ->where(['posto_id' => Yii::$app->user->identity->posto_id])
+                ->andWhere(['>', 'registro_id', $this->registro_id])
+                ->all();
+
+        if ($modelsRegistro) {
+            foreach ($modelsRegistro as $modelRegistro) {
+                $modelsBicoRegistro = BicoRegistro::findAll(['registro_id' => $modelRegistro->registro_id]);
+                if ($modelsBicoRegistro) {
+                    foreach ($modelsBicoRegistro as $modelBicoRegistro) {
+                        $modelBicoRegistro->delete();
+                    }
+                }
+            }
+        }
+        Registro::findOne(['registro_id' => $this->registro_id])->delete();
+    }
+    
 }

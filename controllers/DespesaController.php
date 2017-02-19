@@ -53,7 +53,7 @@ class DespesaController extends Controller {
         $searchModel = new DespesaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->post(), $id);
 
-        $id == 2 ? $this->layout = 'caminhao' : '';
+        $id == 1 ? $this->layout = 'main' : 'caminhao';
 
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -68,7 +68,7 @@ class DespesaController extends Controller {
         $model->posto_id = $id == 1 ? Yii::$app->user->identity->posto_id : 1;
         $model->status = 1;
 
-        $id == 2 ? $this->layout = 'caminhao' : '';
+        $id == 1 ? $this->layout = 'main' : 'caminhao';
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
@@ -90,7 +90,7 @@ class DespesaController extends Controller {
         $model->data_vencimento = date('d/m/Y', strtotime($model->data_vencimento));
         $model->data_pagamento = $model->data_pagamento != NULL ? date('d/m/Y', strtotime($model->data_pagamento)) : NULL;
 
-        $model->referencial == 2 ? $this->layout = 'caminhao' : '';
+        $model->referencial == 1 ? $this->layout = 'main' : 'caminhao';
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 

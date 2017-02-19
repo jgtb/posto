@@ -47,10 +47,9 @@ NProgressAsset::register($this);
                     ['label' => Yii::$app->user->identity->email, 'visible' => !Yii::$app->user->isGuest, 'items' => [
                             ['label' => 'Meu Perfil', 'url' => ['/usuario/view', 'id' => Yii::$app->user->identity->usuario_id]],
                             //['label' => 'Meus Postos', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/site/meus-postos']],
-                            ['label' => 'Relatórios', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/relatorio/create']],
+                            //['label' => 'Relatórios', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/relatorio/create']],
                             //['label' => 'Manutenção', 'visible' => Yii::$app->user->identity->status == 2, 'url' => ['/valor-combustivel/update', 'id' => 1]],
-                            '<li class="divider"></li>',
-                            ['label' => 'Logout',
+                            ['label' => 'Sair',
                                 'url' => ['/site/logout'],
                                 'linkOptions' => ['data-method' => 'post']
                             ],

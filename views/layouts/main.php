@@ -37,11 +37,9 @@ NProgressAsset::register($this);
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
                     ['label' => 'Início', 'visible' => !Yii::$app->user->isGuest, 'url' => ['site/index']],
+                    ['label' => 'Manutenção', 'visible' => Yii::$app->user->identity->usuario_id == 1, 'url' => ['/valor-combustivel/update', 'id' => Yii::$app->user->identity->posto_id]],
                     //['label' => 'Responsáveis', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/usuario', 'id' => 2], 'options' => ['class' => Yii::$app->controller->id == 'usuario' && $_GET['id'] == 2 ? 'active' : '']],
-                    ['label' => 'Registro', 'visible' => !Yii::$app->user->isGuest, 'items' => [
-                            ['label' => 'Bombas & Bicos', 'visible' => !Yii::$app->user->isGuest, 'url' => ['/bomba'], 'options' => ['class' => Yii::$app->controller->id == 'bomba' ? 'active' : '']],
-                            ['label' => 'Registros', 'url' => ['/registro'], 'options' => ['class' => Yii::$app->controller->id == 'registro' ? 'active' : '']],
-                        ]],
+                    ['label' => 'Registros', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/registro'], 'options' => ['class' => Yii::$app->controller->id == 'registro' ? 'active' : '']],
                     ['label' => 'Produto', 'visible' => !Yii::$app->user->isGuest, 'items' => [
                             //['label' => 'Produtos', 'url' => ['/produto'], 'options' => ['class' => Yii::$app->controller->id == 'produto' && Yii::$app->controller->action->id != 'estoque' ? 'active' : '']],
                             ['label' => 'Compras', 'url' => ['/produto-negociacao', 'id' => 2], 'options' => ['class' => Yii::$app->controller->id == 'produto-negociacao' && $_GET['id'] == 2 ? 'active' : '']],
@@ -53,14 +51,14 @@ NProgressAsset::register($this);
                             ['label' => 'Categorias', 'url' => ['/tipo-despesa'], 'options' => ['class' => Yii::$app->controller->id == 'tipo-despesa' ? 'active' : '']],
                             ['label' => 'Despesas', 'url' => ['/despesa', 'id' => 1], 'options' => ['class' => Yii::$app->controller->id == 'despesa' && $_GET['id'] == 1 ? 'active' : '']],
                         ]],
+                    ['label' => 'Relatórios', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/relatorio/create']],
                     ['label' => 'Login', 'visible' => Yii::$app->user->isGuest, 'url' => ['/site/login']],
                     ['label' => Yii::$app->user->identity->email, 'visible' => !Yii::$app->user->isGuest, 'items' => [
                             ['label' => 'Meu Perfil', 'url' => ['/usuario/view', 'id' => Yii::$app->user->identity->usuario_id]],
                             //['label' => 'Meus Postos', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/site/meus-postos']],
-                            ['label' => 'Relatórios', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/relatorio/create']],
-                            ['label' => 'Manutenção', 'visible' => Yii::$app->user->identity->status == 2, 'url' => ['/valor-combustivel/update', 'id' => Yii::$app->user->identity->posto_id]],
-                            '<li class="divider"></li>',
-                            ['label' => 'Logout',
+                            //['label' => 'Relatórios', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/relatorio/create']],
+                            //['label' => 'Manutenção', 'visible' => Yii::$app->user->identity->status == 2, 'url' => ['/valor-combustivel/update', 'id' => Yii::$app->user->identity->posto_id]],
+                            ['label' => 'Sair',
                                 'url' => ['/site/logout'],
                                 'linkOptions' => ['data-method' => 'post']
                             ],

@@ -54,7 +54,10 @@ use app\models\BicoRegistro;
                         </div>
                     </div>
                 </div>
-                <div class="panel-body bico bico-<?= strtolower($modelBicoRegistro->bico->tipoCombustivel->descricao) ?>">               
+                <div class="panel-body bico bico-<?= strtolower($modelBicoRegistro->bico->tipoCombustivel->descricao) ?>">    
+                    <?php if (!$model->isNewRecord) : ?>
+                        <?= $form->field($modelBicoRegistro, 'bico_registro_id')->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][bico_registro_id]'])->label(false); ?>
+                    <?php endif; ?>
                     <?=
                     $form->field($modelBicoRegistro, 'registro_anterior')->textInput([
                         'name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][registro_anterior]',
@@ -68,7 +71,7 @@ use app\models\BicoRegistro;
                     $form->field($modelBicoRegistro, 'registro_atual')->textInput([
                         'name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][registro_atual]',
                         'class' => 'registro-atual form-control',
-                        'disabled' => !$model->isNewRecord ? true : false,
+                        'readonly' => !$model->isNewRecord ? true : false,
                             ]
                     );
                     ?>

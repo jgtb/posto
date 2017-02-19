@@ -31,7 +31,7 @@ class Despesa extends \yii\db\ActiveRecord
             'despesa_id' => 'Despesa ID',
             'posto_id' => 'Posto ID',
             'tipo_despesa_id' => 'Categoria',
-            'valor' => 'Valor',
+            'valor' => 'Valor #Total',
             'data_vencimento' => 'Data de Vencimento',
             'data_pagamento' => 'Data de Pagamento',
             'observacao' => 'Observações',

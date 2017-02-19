@@ -124,7 +124,18 @@ class RegistroController extends Controller {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
             $model->save();
+
+            /*
+            $postBicoRegistro = $_POST['BicoRegistro'];
+            foreach ($postBicoRegistro as $bicoID => $bicoRegistro) {
+                $modelBicoRegistro = BicoRegistro::findOne(['bico_registro_id' => $bicoRegistro['bico_registro_id']]);
+                $modelBicoRegistro->registro_atual = $bicoRegistro['registro_atual'];
+                $modelBicoRegistro->save();
+            }
+             */
             
+            //$model->deleteRegistros();
+           
             Yii::$app->session->setFlash('success', ['body' => 'Registro alterado com sucesso!']);
             return $this->redirect(['index']);
         } else {

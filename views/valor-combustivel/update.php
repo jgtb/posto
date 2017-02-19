@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Alterar Preço #Gasolina & Diesel';
+$this->title = 'Alterar Preço de Venda #Gasolina & Diesel';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="valor_combustivel-update">
