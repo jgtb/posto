@@ -12,7 +12,7 @@ use kartik\money\MaskMoney;
 
     <?php $form = ActiveForm::begin(['id' => $model->formName(), 'enableAjaxValidation' => true]); ?>
 
-    <?= $form->field($model, 'produto_id')->dropDownList(ArrayHelper::map(Produto::findAll($model->negociacao_id == 1 ? ['produto_id' => 3] : ['produto_id' => [1, 2]]), 'produto_id', 'descricao'), ['prompt' => $model->negociacao_id == 2 ? 'Selecione o Produto' : ''])->label($model->negociacao_id == 2 ? 'Produto' : 'Outras Receitas') ?>
+    <?= $form->field($model, 'produto_id')->dropDownList(ArrayHelper::map(Produto::findAll($model->negociacao_id == 1 ? ['produto_id' => 3] : ['produto_id' => [1, 2]]), 'produto_id', 'descricao'), ['prompt' => $model->negociacao_id == 2 ? 'Selecione o Produto' : '', 'disabled' => !$model->isNewRecord ? true : false])->label($model->negociacao_id == 2 ? 'Produto' : 'Outras Receitas') ?>
 
     <!-- ['options' => ['class' => in_array($model->produto_id, [1, 2]) ? 'hidden' : '']] -->
     <?=
@@ -42,6 +42,20 @@ use kartik\money\MaskMoney;
         ],
     ])
     ?>
+
+    <?php if ($model->negociacao_id == 2) : ?>
+        <?=
+        $form->field($model, 'valor_frete')->widget(MaskMoney::classname(), [
+            'pluginOptions' => [
+                'prefix' => 'R$ ',
+                'allowNegative' => false,
+                'allowZero' => true,
+                'thousands' => '.',
+                'decimal' => ',',
+            ]
+        ])->label('Valor #Frete');
+        ?>
+    <?php endif; ?>
 
     <?= $form->field($model, 'observacao')->textarea(['rows' => 6]) ?>
 

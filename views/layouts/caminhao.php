@@ -38,7 +38,7 @@ NProgressAsset::register($this);
                 'items' => [
                     ['label' => 'Início', 'url' => ['site/index']],
                     //['label' => 'Caminhões', 'url' => ['/caminhao'], 'options' => ['class' => Yii::$app->controller->id == 'caminhao' ? 'active' : '']],
-                    ['label' => 'Clientes', 'url' => ['/cliente'], 'options' => ['class' => Yii::$app->controller->id == 'cliente' ? 'active' : '']],
+                    //['label' => 'Clientes', 'url' => ['/cliente'], 'options' => ['class' => Yii::$app->controller->id == 'cliente' ? 'active' : '']],
                     ['label' => 'Alugueis', 'url' => ['/caminhao-cliente'], 'options' => ['class' => Yii::$app->controller->id == 'caminhao-cliente' ? 'active' : '']],
                     ['label' => 'Despesa', 'visible' => !Yii::$app->user->isGuest, 'items' => [
                             ['label' => 'Categorias', 'url' => ['/tipo-despesa'], 'options' => ['class' => Yii::$app->controller->id == 'tipo-despesa' ? 'active' : '']],

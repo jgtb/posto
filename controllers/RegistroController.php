@@ -98,6 +98,7 @@ class RegistroController extends Controller {
                     $modelBicoRegistro->retorno = 0;
                     $modelBicoRegistro->status = 1;
                     $modelBicoRegistro->save();
+                    $modelBicoRegistro->setSaldoValor();
                 }
             }
 
@@ -126,16 +127,16 @@ class RegistroController extends Controller {
             $model->save();
 
             /*
-            $postBicoRegistro = $_POST['BicoRegistro'];
-            foreach ($postBicoRegistro as $bicoID => $bicoRegistro) {
-                $modelBicoRegistro = BicoRegistro::findOne(['bico_registro_id' => $bicoRegistro['bico_registro_id']]);
-                $modelBicoRegistro->registro_atual = $bicoRegistro['registro_atual'];
-                $modelBicoRegistro->save();
-            }
+              $postBicoRegistro = $_POST['BicoRegistro'];
+              foreach ($postBicoRegistro as $bicoID => $bicoRegistro) {
+              $modelBicoRegistro = BicoRegistro::findOne(['bico_registro_id' => $bicoRegistro['bico_registro_id']]);
+              $modelBicoRegistro->registro_atual = $bicoRegistro['registro_atual'];
+              $modelBicoRegistro->save();
+              }
              */
-            
+
             //$model->deleteRegistros();
-           
+
             Yii::$app->session->setFlash('success', ['body' => 'Registro alterado com sucesso!']);
             return $this->redirect(['index']);
         } else {

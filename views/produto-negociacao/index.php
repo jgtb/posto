@@ -44,8 +44,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute' => 'valor', 'format' => 'raw', 'filter' => MaskMoney::widget(['model' => $searchModel, 'attribute' => 'valor', 'pluginOptions' => ['prefix' => 'R$ ', 'allowNegative' => false, 'allowZero' => true, 'thousands' => '.', 'decimal' => ',',]]), 'value' => function ($model) {
                     return 'R$ ' . number_format($model->valor, 2, ',', '.');
                 }],
-            ['attribute' => 'qtde', 'value' => function ($model) {
-                    return $model->qtde;
+            ['attribute' => 'qtde', 'format' => 'raw', 'value' => function ($model) {
+                    $valorSaida = $model->negociacao_id == 2 ? 'Saída #' . $model->getSaida() : '';
+                    return $model->qtde . '<br>' . $valorSaida;
                 }],
             ['attribute' => 'nota_fiscal', 'value' => function ($model) {
                     return $model->nota_fiscal;

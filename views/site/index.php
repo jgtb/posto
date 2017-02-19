@@ -21,13 +21,13 @@ $this->title = Yii::$app->user->identity->posto_id != 0 ? Yii::$app->user->ident
         </div>
     <?php endif; ?>
 
-    <br><br>
+    <br>
 
     <?php if (Yii::$app->user->identity->status == 2) : ?>
         <div class="row">
             <?php foreach ($modelsPosto as $index => $modelPosto) : ?>
                 <div class="col-lg-4">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default panel-no-margin">
                         <div class="panel-heading text-center text-uppercase">
                             <?= $modelPosto->descricao ?>
                         </div>
@@ -35,7 +35,7 @@ $this->title = Yii::$app->user->identity->posto_id != 0 ? Yii::$app->user->ident
                             <div class="text-center">
                                 <?= Html::a(Html::img($index % 2 ? Yii::$app->homeUrl . 'img/1.jpeg' : Yii::$app->homeUrl . 'img/2.jpeg', ['class' => 'img-thumbnail', 'style' => 'width: 43%; margin-bottom: 15px;']), ['troca-posto', 'id' => $modelPosto->posto_id], ['class' => 'alert-btn']) ?>
                             </div>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default panel-no-margin">
                                 <div class="panel-heading text-center">
                                     Estoque Atual
                                 </div>
@@ -72,13 +72,13 @@ $this->title = Yii::$app->user->identity->posto_id != 0 ? Yii::$app->user->ident
                 </div>
             <?php endforeach; ?>
             <div class="col-lg-4">
-                <div class="panel panel-default">
+                <div class="panel panel-default panel-no-margin">
                     <div class="panel-heading text-center text-uppercase">
                         Carro Tanque
                     </div>
                     <div class="panel-body text-center">
                         <?= Html::a(Html::img(Yii::$app->homeUrl . 'img/3.jpeg', ['class' => 'img-thumbnail', 'style' => 'width: 320px; height: 140px; margin-bottom: 15px;']), ['troca-posto', 'id' => 0], ['class' => 'alert-btn']) ?>
-                        <div class="panel panel-default">
+                        <div class="panel panel-default panel-no-margin">
                             <div class="panel-heading text-center">
                                 Clientes
                             </div>

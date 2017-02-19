@@ -33,9 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'hover' => false,
         'emptyText' => 'Nenhum resultado encontrado.',
         'columns' => [
-            ['attribute' => 'caminhao_id', 'value' => function ($model) {
-                    return $model->caminhao->descricao;
-                }],
             ['attribute' => 'cliente_id', 'value' => function ($model) {
                     return $model->cliente->nome;
                 }],

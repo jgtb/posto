@@ -12,13 +12,13 @@ use kartik\money\MaskMoney;
 
 <div class="caminhao-cliente-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => $model->formName(), 'enableAjaxValidation' => true]); ?>
 
-    <?= $form->field($model, 'caminhao_id')->dropDownList(ArrayHelper::map(Caminhao::findAll(['status' => 1]), 'caminhao_id', 'descricao'), ['prompt' => 'Selecione o Caminhão']) ?>
+    <?php if ($model->isNewRecord || !in_array($model->cliente_id, [1, 2])) : ?>
+        <?= $form->field($model, 'cliente_id')->dropDownList(ArrayHelper::map(Cliente::findAll(['posto_id' => 0, 'status' => 1]), 'cliente_id', 'nome'), ['prompt' => 'Selecione o Cliente']) ?>
+    <?php endif; ?>
 
-    <?= $form->field($model, 'cliente_id')->dropDownList(ArrayHelper::map(Cliente::findAll(['status' => 1]), 'cliente_id', 'nome'), ['prompt' => 'Selecione o Cliente']) ?>
-
-    <?= $form->field($model, 'tipo_combustivel_id')->dropDownList(ArrayHelper::map(TipoCombustivel::find()->all(), 'tipo_combustivel_id', 'descricao'), ['prompt' => 'Selecione o Combustível']) ?>
+    <?= $form->field($model, 'tipo_combustivel_id')->dropDownList(ArrayHelper::map(TipoCombustivel::find()->all(), 'tipo_combustivel_id', 'descricao'), ['prompt' => 'Selecione o Combustível', 'disabled' => !$model->isNewRecord && in_array($model->cliente_id, [1, 2]) ? true : false]) ?>
 
     <?=
     $form->field($model, 'valor_litro')->widget(MaskMoney::classname(), [

@@ -5,11 +5,13 @@ namespace app\controllers;
 use Yii;
 use app\models\CaminhaoCliente;
 use app\models\Usuario;
+use app\models\ProdutoNegociacao;
 use app\models\CaminhaoClienteSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\widgets\ActiveForm;
 
 class CaminhaoClienteController extends Controller {
 
@@ -57,6 +59,9 @@ class CaminhaoClienteController extends Controller {
 
     public function actionCreate() {
         $model = new CaminhaoCliente();
+        $model->scenario = 'create';
+        $model->produto_negociacao_id = 0;
+        $model->caminhao_id = 1;
         $model->status = 1;
 
         $this->layout = 'caminhao';
@@ -65,6 +70,8 @@ class CaminhaoClienteController extends Controller {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
             $model->save();
+
+
 
             Yii::$app->session->setFlash('success', ['body' => 'Aluguel registrado com sucesso!']);
             return $this->redirect(['index']);
@@ -77,14 +84,30 @@ class CaminhaoClienteController extends Controller {
 
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $model->scenario = 'update';
         $model->data = date('d/m/Y', strtotime($model->data));
 
         $this->layout = 'caminhao';
+
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = 'json';
+            return ActiveForm::validate($model);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
             $model->save();
+
+            if (in_array($model->cliente_id, [1, 2])) {
+                $modelProdutoNegociacao = ProdutoNegociacao::findOne(['produto_negociacao_id' => $model->produto_negociacao_id]);
+                $modelProdutoNegociacao->valor = $model->valor_litro;
+                $modelProdutoNegociacao->qtde = $model->valor_carrada;
+                $modelProdutoNegociacao->nota_fiscal = $model->nota_fiscal;
+                $modelProdutoNegociacao->data = $model->data;
+                $modelProdutoNegociacao->observacao = $model->observacao;
+                $modelProdutoNegociacao->save();
+            }
 
             Yii::$app->session->setFlash('success', ['body' => 'Aluguel alterado com sucesso!']);
             return $this->redirect(['index']);

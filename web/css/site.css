@@ -184,3 +184,7 @@ and (max-device-width : 480px) { .table > thead { display: none; }}
 .no-thead > thead {
     display: none;
 }
+
+.panel-no-margin {
+    margin-bottom: 0px;
+}

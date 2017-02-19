@@ -6,6 +6,7 @@ use Yii;
 use app\models\ProdutoNegociacao;
 use app\models\Usuario;
 use app\models\PostoUsuario;
+use app\models\CaminhaoCliente;
 use app\models\ProdutoNegociacaoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -70,6 +71,7 @@ class ProdutoNegociacaoController extends Controller {
         $model->posto_id = Yii::$app->user->identity->posto_id;
         $model->negociacao_id = $id;
         $model->valor = 0;
+        $model->valor_frete = 0;
         $model->produto_id = $id == 1 ? 3 : '';
         $model->status = 1;
 
@@ -85,6 +87,22 @@ class ProdutoNegociacaoController extends Controller {
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
             $model->save();
 
+            if ($model->negociacao_id == 2) {
+                $modelCaminhaoCliente = new CaminhaoCliente();
+                $modelCaminhaoCliente->caminhao_id = 1;
+                $modelCaminhaoCliente->cliente_id = Yii::$app->user->identity->posto_id;
+                $modelCaminhaoCliente->tipo_combustivel_id = $model->produto_id;
+                $modelCaminhaoCliente->produto_negociacao_id = $model->produto_negociacao_id;
+                $modelCaminhaoCliente->valor_litro = $model->valor;
+                $modelCaminhaoCliente->valor_carrada = $model->qtde;
+                $modelCaminhaoCliente->valor_frete = $model->valor_frete;
+                $modelCaminhaoCliente->nota_fiscal = $model->nota_fiscal;
+                $modelCaminhaoCliente->data = $model->data;
+                $modelCaminhaoCliente->observacao = $model->observacao;
+                $modelCaminhaoCliente->status = 1;
+                $modelCaminhaoCliente->save();
+            }
+
             Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' registrada com sucesso!']);
             return $this->redirect(['index', 'id' => $model->negociacao_id]);
         } else {
@@ -98,6 +116,7 @@ class ProdutoNegociacaoController extends Controller {
         $model = $this->findModel($id);
         $model->scenario = 'update';
         $model->data = date('d/m/Y', strtotime($model->data));
+        $model->valor_frete = $model->negociacao_id == 2 ? CaminhaoCliente::findOne(['produto_negociacao_id' => $model->produto_negociacao_id])->valor_frete : 0;
 
         $this->layout = 'main';
 
@@ -110,6 +129,17 @@ class ProdutoNegociacaoController extends Controller {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
             $model->save();
+
+            if ($model->negociacao_id == 2) {
+                $modelCaminhaoCliente = CaminhaoCliente::findOne(['produto_negociacao_id' => $model->produto_negociacao_id]);
+                $modelCaminhaoCliente->valor_litro = $model->valor;
+                $modelCaminhaoCliente->valor_carrada = $model->qtde;
+                $modelCaminhaoCliente->valor_frete = $model->valor_frete;
+                $modelCaminhaoCliente->nota_fiscal = $model->nota_fiscal;
+                $modelCaminhaoCliente->data = $model->data;
+                $modelCaminhaoCliente->observacao = $model->observacao;
+                $modelCaminhaoCliente->save();
+            }
 
             Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' alterada com sucesso!']);
             return $this->redirect(['index', 'id' => $model->negociacao_id]);

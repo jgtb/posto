@@ -121,7 +121,7 @@ class Relatorio extends \yii\db\ActiveRecord {
                 ->leftJoin('bico_registro', 'bico.bico_id = bico_registro.bico_id')
                 ->leftJoin('registro', 'bico_registro.registro_id = registro.registro_id')
                 ->where(['between', 'DATE(data)', $this->data_inicial, $this->data_final])
-                ->where(['registro.posto_id' => Yii::$app->user->identity->posto_id])
+                ->andWhere(['registro.posto_id' => Yii::$app->user->identity->posto_id])
                 ->orderBy(['bico.descricao' => SORT_ASC])
                 ->all();
 
@@ -129,9 +129,15 @@ class Relatorio extends \yii\db\ActiveRecord {
     }
 
     public function getCompraGeral() {
-        $modelsCompraGeral = Produto::find()
-                ->where(['produto_id' => [1, 2]])
+        $modelsCompraGeral = ValorSaida::find()
+                ->leftJoin('bico_registro', 'valor_saida.bico_registro_id = bico_registro.bico_registro_id')
+                ->leftJoin('registro', 'bico_registro.registro_id = registro.registro_id')
+                ->leftJoin('produto_negociacao', 'valor_saida.produto_negociacao_id = produto_negociacao.produto_negociacao_id')
+                ->where(['between', 'DATE(registro.data)', $this->data_inicial, $this->data_final])
+                ->andWhere(['registro.posto_id' => Yii::$app->user->identity->posto_id])
+                ->groupBy(['produto_negociacao.valor'])
                 ->all();
+                        
         return $modelsCompraGeral;
     }
 

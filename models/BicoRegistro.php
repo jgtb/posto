@@ -47,4 +47,35 @@ class BicoRegistro extends \yii\db\ActiveRecord {
         return $this->hasOne(Registro::className(), ['registro_id' => 'registro_id']);
     }
 
+    public function setSaldoValor() {
+        $qtdeLitro = $this->registro_atual - $this->registro_anterior;
+
+        $modelsCompra = ProdutoNegociacao::find()
+                ->where(['negociacao_id' => 2, 'status' => 1, 'posto_id' => Yii::$app->user->identity->posto_id])
+                ->all();
+
+        foreach ($modelsCompra as $modelCompra) {
+            $valorSaida = ValorSaida::find()
+                    ->where(['produto_negociacao_id' => $modelCompra->produto_negociacao_id])
+                    ->sum('valor');
+
+            $valorSaida = $valorSaida != NULL ? $valorSaida : 0;
+
+            if (($modelCompra->qtde > $valorSaida) && $qtdeLitro > 0) {
+                $valorRestante = $modelCompra->qtde - $valorSaida;
+                $modelValorSaida = new ValorSaida();
+                $modelValorSaida->bico_registro_id = $this->bico_registro_id;
+                $modelValorSaida->produto_negociacao_id = $modelCompra->produto_negociacao_id;
+                if ($qtdeLitro >= $valorRestante) {
+                    $modelValorSaida->valor = $valorRestante;
+                    $qtdeLitro -= $valorRestante;
+                } else {
+                    $modelValorSaida->valor = $qtdeLitro;
+                    $qtdeLitro = 0;
+                }
+                $modelValorSaida->save();
+            }
+        }
+    }
+
 }

@@ -1,7 +1,7 @@
 <?php
 
 use app\models\Despesa;
-use app\models\ProdutoNegociacao;
+use app\models\ValorSaida;
 use app\models\BicoRegistro;
 
 include("../vendor/mpdf/mpdf/mpdf.php");
@@ -100,7 +100,7 @@ $table = '
     <table class="table table-striped table-bordered text-center">
         <thead>
             <tr>
-                <td colspan="7">Vendas</td>
+                <td colspan="7">Vendas #Combustível</td>
             </tr>
             <tr>
                 <td>Bomba</td>
@@ -131,7 +131,7 @@ foreach ($modelsVendaGeral as $modelVendaGeral) {
 
 $totalVendas = BicoRegistro::find()->leftJoin('registro', 'bico_registro.registro_id = registro.registro_id')->where(['registro.posto_id' => Yii::$app->user->identity->posto_id])->andWhere(['between', 'registro.data', $model->data_inicial, $model->data_final])->sum('(((bico_registro.registro_atual - bico_registro.registro_anterior) - bico_registro.retorno) * bico_registro.valor)');
 
-$table .= '<tr><td colspan="7">Total Vendas: R$ ' . number_format($totalVendas, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="7">Total Vendas #Combustível: R$ ' . number_format($totalVendas, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 
@@ -155,12 +155,15 @@ $table = '
 $table .= '<tbody>';
 
 $table .= '<tr>'
-            . '<td>Outros</td>'
-            . '<td>' . $model->getVendaOutrosGeralQ() . '</td>';
+        . '<td>Outros</td>'
+        . '<td>' . $model->getVendaOutrosGeralQ() . '</td>';
 
 $table .= '<tr><td colspan="2">Total Vendas #Outras Receitas: R$ ' . number_format($model->getVendaOutrosGeralT(), 2, ',', '.') . '</td></tr>';
 
 $totalVendas += $model->getVendaOutrosGeralT();
+
+$table .= '<tr><td colspan="2">Total Vendas #Geral: R$ ' . number_format($totalVendas, 2, ',', '.') . '</td></tr>';
+
 
 $table .= '</tbody>';
 
@@ -169,20 +172,23 @@ $table .= '</table>';
 $mpdf->WriteHTML($table);
 
 
+
+
+
+
 //Compras
 $modelsCompraGeral = $model->getCompraGeral();
-//$valorGasolina = $model->getValorCombustivel(1);
-//$valorDiesel = $model->getValorCombustivel(2);
 
 $table = '
     <table class="table table-striped table-bordered text-center">
         <thead>
             <tr>
-                <td colspan="3">Compras</td>
+                <td colspan="4">Compras</td>
             </tr>
             <tr>
                 <td>Produto</td>
                 <td>Quantidade</td>
+                <td>Valor</td>
                 <td>Total</td>
             </tr>
         </thead>
@@ -192,34 +198,17 @@ $table .= '<tbody>';
 
 foreach ($modelsCompraGeral as $modelCompraGeral) {
 
-    /*
-    if ($modelCompraGeral->produto_id == 1)
-        $table .= '<tr>'
-                . '<td>' . $modelCompraGeral->descricao . ' #Estoque</td>'
-                . '<td> ' . $estoqueGasolinaInicial . '</td>'
-                . '<td>R$ ' . number_format($estoqueGasolinaInicial * $valorGasolina, 2, ',', '.') . '</td>'
-                . '</tr>';
-
-    if ($modelCompraGeral->produto_id == 2)
-        $table .= '<tr>'
-                . '<td>' . $modelCompraGeral->descricao . ' #Estoque</td>'
-                . '<td> ' . $estoqueDieselInicial . '</td>'
-                . '<td>R$ ' . number_format($estoqueDieselInicial * $valorDiesel, 2, ',', '.') . '</td>'
-                . '</tr>';
-     */
-
     $table .= '<tr>'
-            . '<td>' . $modelCompraGeral->descricao . '</td>'
-            . '<td>' . ProdutoNegociacao::find()->where(['negociacao_id' => 2, 'produto_id' => $modelCompraGeral->produto_id, 'posto_id' => Yii::$app->user->identity->posto_id])->andWhere(['between', 'data', $model->data_inicial, $model->data_final])->sum('qtde') . '</td>'
-            . '<td>R$ ' . number_format(ProdutoNegociacao::find()->where(['negociacao_id' => 2, 'produto_id' => $modelCompraGeral->produto_id, 'posto_id' => Yii::$app->user->identity->posto_id])->andWhere(['between', 'data', $model->data_inicial, $model->data_final])->sum('qtde * valor'), 2, ',', '.') . '</td>'
+            . '<td>' . $modelCompraGeral->bicoRegistro->bico->tipoCombustivel->descricao . '</td>'
+            . '<td>' . ValorSaida::find()->leftJoin('bico_registro', 'valor_saida.bico_registro_id = bico_registro.bico_registro_id')->leftJoin('registro', 'bico_registro.registro_id = registro.registro_id')->leftJoin('produto_negociacao', 'valor_saida.produto_negociacao_id = produto_negociacao.produto_negociacao_id')->where(['between', 'DATE(registro.data)', $model->data_inicial, $model->data_final])->andWhere(['produto_negociacao.valor' => $modelCompraGeral->produtoNegociacao->valor, 'registro.posto_id' => Yii::$app->user->identity->posto_id])->sum('valor_saida.valor') . '</td>'
+            . '<td>R$ ' . number_format($modelCompraGeral->produtoNegociacao->valor, 2, ',', '.') . '</td>'
+            . '<td>R$ ' . number_format(ValorSaida::find()->leftJoin('bico_registro', 'valor_saida.bico_registro_id = bico_registro.bico_registro_id')->leftJoin('registro', 'bico_registro.registro_id = registro.registro_id')->leftJoin('produto_negociacao', 'valor_saida.produto_negociacao_id = produto_negociacao.produto_negociacao_id')->where(['between', 'DATE(registro.data)', $model->data_inicial, $model->data_final])->andWhere(['produto_negociacao.valor' => $modelCompraGeral->produtoNegociacao->valor, 'registro.posto_id' => Yii::$app->user->identity->posto_id])->sum('valor_saida.valor * produto_negociacao.valor'), 2, ',', '.') . '</td>'
             . '</tr>';
 }
 
-//$totalCompras += $estoqueGasolinaInicial * $valorGasolina;
-//$totalCompras += $estoqueDieselInicial * $valorDiesel;
-$totalCompras += ProdutoNegociacao::find()->where(['negociacao_id' => 2, 'posto_id' => Yii::$app->user->identity->posto_id])->andWhere(['between', 'data', $model->data_inicial, $model->data_final])->sum('qtde * valor');
+$totalCompras = ValorSaida::find()->leftJoin('bico_registro', 'valor_saida.bico_registro_id = bico_registro.bico_registro_id')->leftJoin('registro', 'bico_registro.registro_id = registro.registro_id')->leftJoin('produto_negociacao', 'valor_saida.produto_negociacao_id = produto_negociacao.produto_negociacao_id')->where(['between', 'DATE(registro.data)', $model->data_inicial, $model->data_final])->andWhere(['registro.posto_id' => Yii::$app->user->identity->posto_id])->sum('valor_saida.valor * produto_negociacao.valor');
 
-$table .= '<tr><td colspan="3">Total Compras: R$ ' . number_format($totalCompras, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="4">Total Compras: R$ ' . number_format($totalCompras, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 
