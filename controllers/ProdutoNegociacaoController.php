@@ -12,7 +12,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use yii\widgets\ActiveForm;
 
 class ProdutoNegociacaoController extends Controller {
 
@@ -76,12 +75,7 @@ class ProdutoNegociacaoController extends Controller {
         $model->status = 1;
 
         $this->layout = 'main';
-
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = 'json';
-            return ActiveForm::validate($model);
-        }
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
@@ -120,11 +114,6 @@ class ProdutoNegociacaoController extends Controller {
 
         $this->layout = 'main';
 
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = 'json';
-            return ActiveForm::validate($model);
-        }
-
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
@@ -157,6 +146,8 @@ class ProdutoNegociacaoController extends Controller {
             Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' excluída com sucesso!']);
             $model->status = 0;
             $model->save();
+        } else {
+            Yii::$app->session->setFlash('danger', ['body' => 'Não foi possível excluír esta ' . substr($model->negociacao->descricao, 0, -1)]);
         }
 
         return $this->redirect(['index', 'id' => $model->negociacao_id]);

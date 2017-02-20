@@ -11,7 +11,7 @@ use kartik\money\MaskMoney;
 
 <div class="caminhao-cliente-form">
 
-    <?php $form = ActiveForm::begin(['id' => $model->formName(), 'enableAjaxValidation' => true]); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
     <?php if ($model->isNewRecord || !in_array($model->cliente_id, [1, 2])) : ?>
         <?= $form->field($model, 'cliente_id')->dropDownList(ArrayHelper::map(Cliente::findAll(['posto_id' => 0, 'status' => 1]), 'cliente_id', 'nome'), ['prompt' => 'Selecione o Cliente']) ?>

@@ -51,7 +51,8 @@ class BicoRegistro extends \yii\db\ActiveRecord {
         $qtdeLitro = ($this->registro_atual - $this->registro_anterior) - $this->retorno;
 
         $modelsCompra = ProdutoNegociacao::find()
-                ->where(['negociacao_id' => 2, 'status' => 1, 'posto_id' => Yii::$app->user->identity->posto_id])
+                ->where(['negociacao_id' => 2, 'produto_id' => $this->bico->tipo_combustivel_id, 'status' => 1, 'posto_id' => Yii::$app->user->identity->posto_id])
+                ->orderBy(['data' => SORT_ASC])
                 ->all();
 
         foreach ($modelsCompra as $modelCompra) {

@@ -87,8 +87,7 @@ class Relatorio extends \yii\db\ActiveRecord {
     public function getEntrada($tipoCombustivelID) {
         $entrada = ProdutoNegociacao::find()
                 ->where(['negociacao_id' => 2, 'status' => 1, 'produto_id' => $tipoCombustivelID, 'posto_id' => Yii::$app->user->identity->posto_id])
-                ->andWhere(['>', 'DATE(data)', $this->data_inicial])
-                ->andWhere(['<=', 'DATE(data)', $this->data_final])
+                ->andWhere(['between', 'DATE(data)', $this->data_inicial, $this->data_final])
                 ->sum('qtde');
 
         return $entrada;
@@ -135,9 +134,10 @@ class Relatorio extends \yii\db\ActiveRecord {
                 ->leftJoin('produto_negociacao', 'valor_saida.produto_negociacao_id = produto_negociacao.produto_negociacao_id')
                 ->where(['between', 'DATE(registro.data)', $this->data_inicial, $this->data_final])
                 ->andWhere(['registro.posto_id' => Yii::$app->user->identity->posto_id])
+                ->orderBy(['produto_negociacao.produto_id' => SORT_ASC])
                 ->groupBy(['produto_negociacao.valor'])
                 ->all();
-                        
+
         return $modelsCompraGeral;
     }
 

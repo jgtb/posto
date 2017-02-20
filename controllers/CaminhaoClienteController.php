@@ -11,7 +11,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use yii\widgets\ActiveForm;
 
 class CaminhaoClienteController extends Controller {
 
@@ -66,11 +65,6 @@ class CaminhaoClienteController extends Controller {
 
         $this->layout = 'caminhao';
         
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = 'json';
-            return ActiveForm::validate($model);
-        }
-
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
@@ -91,12 +85,7 @@ class CaminhaoClienteController extends Controller {
         $model->data = date('d/m/Y', strtotime($model->data));
 
         $this->layout = 'caminhao';
-
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = 'json';
-            return ActiveForm::validate($model);
-        }
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));

@@ -14,7 +14,7 @@ class CaminhaoCliente extends \yii\db\ActiveRecord {
         return [
             [['caminhao_id', 'cliente_id', 'tipo_combustivel_id', 'produto_negociacao_id', 'valor_litro', 'valor_carrada', 'valor_frete', 'nota_fiscal', 'data', 'status'], 'required', 'on' => ['create', 'update'], 'message' => 'Campo obrigatório'],
             [['caminhao_id', 'cliente_id', 'tipo_combustivel_id', 'produto_negociacao_id', 'valor_carrada', 'status'], 'integer', 'on' => ['create', 'update']],
-            [['valor_carrada'], 'checaEstoqueUpdateAluguel', 'on' => ['update']],
+            [['valor_carrada'], 'compare', 'compareValue' => (int) ValorSaida::find()->where(['produto_negociacao_id' => $this->produto_negociacao_id])->sum('valor'), 'operator' => '>=', 'on' => ['update'], 'message' => 'Limite de #' . (int) ValorSaida::find()->where(['produto_negociacao_id' => $this->produto_negociacao_id])->sum('valor') . ''],
             [['valor_litro'], 'number', 'on' => ['create', 'update']],
             [['data'], 'safe', 'on' => ['create', 'update']],
             [['nota_fiscal', 'observacao'], 'string', 'max' => 500, 'on' => ['create', 'update']],
@@ -23,23 +23,7 @@ class CaminhaoCliente extends \yii\db\ActiveRecord {
             [['tipo_combustivel_id'], 'exist', 'skipOnError' => true, 'targetClass' => TipoCombustivel::className(), 'targetAttribute' => ['tipo_combustivel_id' => 'tipo_combustivel_id']],
         ];
     }
-
-    public function checaEstoqueUpdateAluguel($attribute, $params) {
-        if ($this->produto_negociacao_id != 0) {
-            $valorSaida = ValorSaida::find()
-                    ->where(['produto_negociacao_id' => $this->produto_negociacao_id])
-                    ->sum('valor');
-
-            $valorSaida = $valorSaida != NULL ? $valorSaida : 0;
-
-            if ($this->valor_carrada < $valorSaida) {
-                $this->addError($attribute, 'Saída de #' . $valorSaida . '. Limite de: ' . $valorSaida);
-            }
-        }
-
-        return true;
-    }
-
+    
     public function attributeLabels() {
         return [
             'caminhao_cliente_id' => 'Caminhao Cliente ID',

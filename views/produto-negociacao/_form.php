@@ -10,11 +10,10 @@ use kartik\money\MaskMoney;
 
 <div class="produto-negociacao-form">
 
-    <?php $form = ActiveForm::begin(['id' => $model->formName(), 'enableAjaxValidation' => true]); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'produto_id')->dropDownList(ArrayHelper::map(Produto::findAll($model->negociacao_id == 1 ? ['produto_id' => 3] : ['produto_id' => [1, 2]]), 'produto_id', 'descricao'), ['prompt' => $model->negociacao_id == 2 ? 'Selecione o Produto' : '', 'disabled' => !$model->isNewRecord ? true : false])->label($model->negociacao_id == 2 ? 'Produto' : 'Outras Receitas') ?>
 
-    <!-- ['options' => ['class' => in_array($model->produto_id, [1, 2]) ? 'hidden' : '']] -->
     <?=
     $form->field($model, 'valor')->widget(MaskMoney::classname(), [
         'pluginOptions' => [
@@ -71,22 +70,3 @@ use kartik\money\MaskMoney;
 
 </div>
 
-<script type="text/javascript" src="<?= Yii::$app->request->baseUrl . '/js/jquery.min.js' ?>"></script>
-<script type="text/javascript">
-    $(function () {
-        /*
-         $('#produtonegociacao-produto_id').on('change', function () {
-         
-         var produto_id = $(this).val();
-         
-         if (produto_id == 1 || produto_id == 2)
-         {
-         $('.field-produtonegociacao-valor').addClass('hidden');
-         } else {
-         $('.field-produtonegociacao-valor').removeClass('hidden');
-         }
-         
-         });
-         */
-    });
-</script>
