@@ -34,6 +34,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'descricao',
             ['class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete}',
+                'visibleButtons' => [
+                    'update' => function ($model) {
+                        return $model->tipo_despesa_id != 1 ? true : false;
+                    },
+                    'delete' => function ($model) {
+                        return $model->tipo_despesa_id != 1 ? true : false;
+                    },
+                ],
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-edit"></span>', $url, ['class' => 'btn btn-xs btn-primary', 'title' => 'Alterar Categoria']);

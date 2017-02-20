@@ -64,6 +64,7 @@ class DespesaController extends Controller {
 
     public function actionCreate($id) {
         $model = new Despesa();
+        $model->produto_negociacao_id = 0;
         $model->referencial = $id;
         $model->posto_id = $id == 1 ? Yii::$app->user->identity->posto_id : 1;
         $model->status = 1;

@@ -38,6 +38,9 @@ class RegistroSearch extends Registro {
                     'registro_id',
                     'bico_registro_id' => ['asc' => ['bomba.descricao' => SORT_ASC], 'desc' => ['bomba.descricao' => SORT_DESC]],
                 ]
+            ],
+            'pagination' => [
+                'pageSize' => 40
             ]
         ]);
 

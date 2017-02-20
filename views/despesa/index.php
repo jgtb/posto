@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Nova Despesa', ['create', 'id' => $id], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php Pjax::begin(['id' => 'pjax-despesa', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST',  'url' => Yii::$app->homeUrl . Yii::$app->controller->id . '?id=' . $id]]); ?>
-    
+    <?php Pjax::begin(['id' => 'pjax-despesa', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST', 'url' => Yii::$app->homeUrl . Yii::$app->controller->id . '?id=' . $id]]); ?>
+
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
@@ -51,6 +51,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete}',
                 'contentOptions' => ['style' => 'width: 8%;'],
+                'visibleButtons' => [
+                    'update' => function ($model) {
+                        return $model->produto_negociacao_id == 0 ? true : false;
+                    },
+                    'delete' => function ($model) {
+                        return $model->produto_negociacao_id == 0 ? true : false;
+                    },
+                ],
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-edit"></span>', $url, ['class' => 'btn btn-xs btn-primary', 'data-pjax' => 0, 'title' => 'Alterar Despesa']);

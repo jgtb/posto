@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 $this->title = 'Alterar Despesa: ' . $model->tipoDespesa->descricao;
 $this->params['breadcrumbs'][] = ['label' => 'Despesas', 'url' => ['index', 'id' => $model->referencial]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Alterar';
 ?>
 <div class="despesa-update">
 

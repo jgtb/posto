@@ -15,8 +15,8 @@ class Despesa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['posto_id', 'tipo_despesa_id', 'valor', 'data_vencimento', 'referencial', 'status'], 'required', 'message' => 'Campo Obrigatório'],
-            [['posto_id', 'tipo_despesa_id', 'referencial', 'status'], 'integer'],
+            [['posto_id', 'tipo_despesa_id', 'produto_negociacao_id', 'valor', 'data_vencimento', 'referencial', 'status'], 'required', 'message' => 'Campo Obrigatório'],
+            [['posto_id', 'tipo_despesa_id', 'produto_negociacao_id', 'referencial', 'status'], 'integer'],
             [['valor'], 'number'],
             [['data_vencimento', 'data_pagamento'], 'safe'],
             [['observacao'], 'string', 'max' => 500],
@@ -31,6 +31,7 @@ class Despesa extends \yii\db\ActiveRecord
             'despesa_id' => 'Despesa ID',
             'posto_id' => 'Posto ID',
             'tipo_despesa_id' => 'Categoria',
+            'produto_negociacao_id' => 'Compra',
             'valor' => 'Valor #Total',
             'data_vencimento' => 'Data de Vencimento',
             'data_pagamento' => 'Data de Pagamento',

@@ -6,6 +6,7 @@ use Yii;
 use app\models\CaminhaoCliente;
 use app\models\Usuario;
 use app\models\ProdutoNegociacao;
+use app\models\Despesa;
 use app\models\CaminhaoClienteSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -64,12 +65,12 @@ class CaminhaoClienteController extends Controller {
         $model->status = 1;
 
         $this->layout = 'caminhao';
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
             $model->save();
-            
+
             Yii::$app->session->setFlash('success', ['body' => 'Aluguel registrado com sucesso!']);
             return $this->redirect(['index']);
         } else {
@@ -85,7 +86,7 @@ class CaminhaoClienteController extends Controller {
         $model->data = date('d/m/Y', strtotime($model->data));
 
         $this->layout = 'caminhao';
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
@@ -99,6 +100,13 @@ class CaminhaoClienteController extends Controller {
                 $modelProdutoNegociacao->data = $model->data;
                 $modelProdutoNegociacao->observacao = $model->observacao;
                 $modelProdutoNegociacao->save();
+
+                $modelDespesa = Despesa::findOne(['produto_negociacao_id' => $model->produto_negociacao_id]);
+                $modelDespesa->valor = $model->valor_litro * $model->valor_frete;
+                $modelDespesa->data_vencimento = $model->data;
+                $modelDespesa->data_pagamento = $model->data;
+                $modelDespesa->observacao = $model->observacao;
+                $modelDespesa->save();
             }
 
             Yii::$app->session->setFlash('success', ['body' => 'Aluguel alterado com sucesso!']);
@@ -112,10 +120,26 @@ class CaminhaoClienteController extends Controller {
 
     public function actionDelete($id) {
         $model = $this->findModel($id);
-        $model->status = 0;
-        $model->save();
+        $modelProdutoNegociacao = ProdutoNegociacao::findOne(['produto_negociacao_id' => $model->produto_negociacao_id]);
+        $modelDespesa = Despesa::findOne(['produto_negociacao_id' => $model->produto_negociacao_id]);
 
-        Yii::$app->session->setFlash('success', ['body' => 'Aluguel excluído com sucesso!']);
+        if ($model->produto_negociacao_id != 0) {
+            if ($modelProdutoNegociacao->checaEstoqueDeleteCompra()) {
+                Yii::$app->session->setFlash('success', ['body' => 'Aluguel excluído com sucesso!']);
+                $model->status = 0;
+                $model->save();
+                $modelProdutoNegociacao->status = 0;
+                $modelProdutoNegociacao->save();
+                $modelDespesa->status = 0;
+                $modelDespesa->save();
+            } else {
+                Yii::$app->session->setFlash('danger', ['body' => 'Não foi possível excluír este Aluguel, existe uma Compra associada e ja houve Saída!']);
+            }
+        } else {
+            $model->status = 0;
+            $model->save();
+        }
+
         return $this->redirect(['index']);
     }
 

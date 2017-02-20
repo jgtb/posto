@@ -7,6 +7,7 @@ use app\models\ProdutoNegociacao;
 use app\models\Usuario;
 use app\models\PostoUsuario;
 use app\models\CaminhaoCliente;
+use app\models\Despesa;
 use app\models\ProdutoNegociacaoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -75,7 +76,7 @@ class ProdutoNegociacaoController extends Controller {
         $model->status = 1;
 
         $this->layout = 'main';
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
@@ -95,6 +96,18 @@ class ProdutoNegociacaoController extends Controller {
                 $modelCaminhaoCliente->observacao = $model->observacao;
                 $modelCaminhaoCliente->status = 1;
                 $modelCaminhaoCliente->save();
+
+                $modelDespesa = new Despesa();
+                $modelDespesa->posto_id = Yii::$app->user->identity->posto_id;
+                $modelDespesa->tipo_despesa_id = 1;
+                $modelDespesa->produto_negociacao_id = $model->produto_negociacao_id;
+                $modelDespesa->referencial = 1;
+                $modelDespesa->valor = $model->qtde * $model->valor_frete;
+                $modelDespesa->data_vencimento = $model->data;
+                $modelDespesa->data_pagamento = $model->data;
+                $modelDespesa->observacao = $model->observacao;
+                $modelDespesa->status = 1;
+                $modelDespesa->save();
             }
 
             Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' registrada com sucesso!']);
@@ -128,6 +141,13 @@ class ProdutoNegociacaoController extends Controller {
                 $modelCaminhaoCliente->data = $model->data;
                 $modelCaminhaoCliente->observacao = $model->observacao;
                 $modelCaminhaoCliente->save();
+
+                $modelDespesa = Despesa::findOne(['produto_negociacao_id' => $model->produto_negociacao_id]);
+                $modelDespesa->valor = $model->qtde * $model->valor_frete;
+                $modelDespesa->data_vencimento = $model->data;
+                $modelDespesa->data_pagamento = $model->data;
+                $modelDespesa->observacao = $model->observacao;
+                $modelDespesa->save();
             }
 
             Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' alterada com sucesso!']);
@@ -141,13 +161,24 @@ class ProdutoNegociacaoController extends Controller {
 
     public function actionDelete($id) {
         $model = $this->findModel($id);
+        $modelCaminhaoCliente = CaminhaoCliente::findOne(['produto_negociacao_id' => $model->produto_negociacao_id]);
+        $modelDespesa = Despesa::findOne(['produto_negociacao_id' => $model->produto_negociacao_id]);
 
-        if ($model->checaEstoqueDeleteCompra()) {
-            Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' excluída com sucesso!']);
+        if ($model->negociacao_id == 2) {
+            if ($model->checaEstoqueDeleteCompra()) {
+                Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' excluída com sucesso!']);
+                $model->status = 0;
+                $model->save();
+                $modelCaminhaoCliente->status = 0;
+                $modelCaminhaoCliente->save();
+                $modelDespesa->status = 0;
+                $modelDespesa->save();
+            } else {
+                Yii::$app->session->setFlash('danger', ['body' => 'Não foi possível excluír esta ' . substr($model->negociacao->descricao, 0, -1) . ', já houve Saída']);
+            }
+        } else {
             $model->status = 0;
             $model->save();
-        } else {
-            Yii::$app->session->setFlash('danger', ['body' => 'Não foi possível excluír esta ' . substr($model->negociacao->descricao, 0, -1)]);
         }
 
         return $this->redirect(['index', 'id' => $model->negociacao_id]);
