@@ -158,12 +158,21 @@ class RegistroController extends Controller {
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
+            $model->deleteAllBicoRegistro();
+
             $postBicoRegistro = $_POST['BicoRegistro'];
             if ($postBicoRegistro) {
                 foreach ($postBicoRegistro as $bicoID => $bicoRegistro) {
-                    $modelBicoRegistro = BicoRegistro::findOne(['bico_registro_id' => $bicoRegistro['bico_registro_id']]);
+                    $modelBicoRegistro = new BicoRegistro();
+                    $modelBicoRegistro->registro_id = $model->registro_id;
+                    $modelBicoRegistro->bico_id = $bicoID;
+                    $modelBicoRegistro->valor = $bicoRegistro['valor'];
+                    $modelBicoRegistro->registro_atual = $bicoRegistro['registro_atual'];
+                    $modelBicoRegistro->registro_anterior = $bicoRegistro['registro_anterior'];
                     $modelBicoRegistro->retorno = $bicoRegistro['retorno'];
+                    $modelBicoRegistro->status = 1;
                     $modelBicoRegistro->save();
+                    $modelBicoRegistro->setSaldoValor();
                 }
             }
 

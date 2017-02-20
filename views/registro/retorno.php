@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="panel-body">
                                     <?= $form->field($modelBicoRegistro, 'retorno')->textInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][retorno]']); ?>
                                 </div>
-                                <?= $form->field($modelBicoRegistro, 'bico_registro_id')->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][bico_registro_id]'])->label(false); ?>
+                                <?= $form->field($modelBicoRegistro, 'valor')->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][valor]'])->label(false); ?>
                                 <?= $form->field($modelBicoRegistro, 'registro_anterior')->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][registro_anterior]'])->label(false); ?>
                                 <?= $form->field($modelBicoRegistro, 'registro_atual')->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][registro_atual]'])->label(false); ?>
                             </div>

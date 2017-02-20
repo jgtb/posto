@@ -29,52 +29,11 @@ class ProdutoNegociacao extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function checaEstoqueCreateVenda($attribute, $params) {
-        if ($this->negociacao_id == 1) {
-            $qtdeCompra = ProdutoNegociacao::find()
-                    ->where(['negociacao_id' => 2, 'status' => 1, 'produto_id' => $this->produto_id, 'posto_id' => Yii::$app->user->identity->posto_id])
-                    ->sum('qtde');
-
-            $qtdeVenda = ProdutoNegociacao::find()
-                    ->where(['negociacao_id' => 1, 'status' => 1, 'produto_id' => $this->produto_id, 'posto_id' => Yii::$app->user->identity->posto_id])
-                    ->sum('qtde');
-
-            $result = $qtdeCompra - $qtdeVenda;
-
-            if ($this->qtde > $result) {
-                $this->addError($attribute, 'Estoque indisponível. Limite de: ' . $result);
-            }
-            return true;
-        }
-
-        return true;
-    }
-
-    public function checaEstoqueUpdateVenda($attribute, $params) {
-        if ($this->negociacao_id == 1) {
-            $qtdeCompra = ProdutoNegociacao::find()
-                    ->where(['negociacao_id' => 2, 'status' => 1, 'produto_id' => $this->produto_id, 'posto_id' => Yii::$app->user->identity->posto_id])
-                    ->sum('qtde');
-
-            $qtdeVenda = ProdutoNegociacao::find()
-                    ->where(['negociacao_id' => 1, 'status' => 1, 'produto_id' => $this->produto_id, 'posto_id' => Yii::$app->user->identity->posto_id])
-                    ->sum('qtde');
-
-            $result = ($qtdeCompra - $qtdeVenda) + ProdutoNegociacao::findOne(['produto_negociacao_id' => $this->produto_negociacao_id])->qtde;
-
-            if ($this->qtde > $result) {
-                $this->addError($attribute, 'Estoque indisponível. Limite de: ' . $result);
-            }
-            return true;
-        }
-
-        return true;
-    }
-
     public function checaEstoqueUpdateCompra($attribute, $params) {
         if ($this->negociacao_id == 2) {
             $valorSaida = ValorSaida::find()
-                    ->where(['produto_negociacao_id' => $this->produto_negociacao_id])
+                    ->leftJoin('produto_negociacao', 'valor_saida.produto_negociacao_id = produto_negociacao.produto_negociacao_id')
+                    ->where(['produto_negociacao.produto_id' => $this->produto_id, 'produto_negociacao_id' => $this->produto_negociacao_id])
                     ->sum('valor');
 
             $valorSaida = $valorSaida != NULL ? $valorSaida : 0;
@@ -135,8 +94,9 @@ class ProdutoNegociacao extends \yii\db\ActiveRecord {
 
     public function getSaida() {
         $valorSaida = ValorSaida::find()
-                ->where(['produto_negociacao_id' => $this->produto_negociacao_id])
-                ->sum('valor');
+                ->leftJoin('produto_negociacao', 'valor_saida.produto_negociacao_id = produto_negociacao.produto_negociacao_id')
+                ->where(['produto_negociacao.produto_id' => $this->produto_id, 'produto_negociacao.produto_negociacao_id' => $this->produto_negociacao_id])
+                ->sum('valor_saida.valor');
 
         $valorSaida = $valorSaida != NULL ? $valorSaida : 0;
 

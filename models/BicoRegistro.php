@@ -56,8 +56,9 @@ class BicoRegistro extends \yii\db\ActiveRecord {
 
         foreach ($modelsCompra as $modelCompra) {
             $valorSaida = ValorSaida::find()
-                    ->where(['produto_negociacao_id' => $modelCompra->produto_negociacao_id])
-                    ->sum('valor');
+                    ->leftJoin('produto_negociacao', 'valor_saida.produto_negociacao_id = produto_negociacao.produto_negociacao_id')
+                    ->where(['produto_negociacao.produto_id' => $this->bico->tipo_combustivel_id, 'produto_negociacao.produto_negociacao_id' => $modelCompra->produto_negociacao_id])
+                    ->sum('valor_saida.valor');
 
             $valorSaida = $valorSaida != NULL ? $valorSaida : 0;
 

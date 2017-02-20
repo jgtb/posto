@@ -26,7 +26,7 @@ class ValorSaida extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'valor_saida' => 'Valor Saida',
+            'valor_saida_id' => 'Valor Saida',
             'bico_registro_id' => 'Bico Registro ID',
             'produto_negociacao_id' => 'Produto Negociacao ID',
             'valor' => 'Valor',
