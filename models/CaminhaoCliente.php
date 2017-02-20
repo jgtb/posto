@@ -12,12 +12,12 @@ class CaminhaoCliente extends \yii\db\ActiveRecord {
 
     public function rules() {
         return [
-            [['caminhao_id', 'cliente_id', 'tipo_combustivel_id', 'produto_negociacao_id', 'valor_litro', 'valor_carrada', 'valor_frete', 'nota_fiscal', 'data', 'status'], 'required', 'message' => 'Campo obrigatório'],
-            [['caminhao_id', 'cliente_id', 'tipo_combustivel_id', 'valor_carrada', 'status'], 'integer'],
+            [['caminhao_id', 'cliente_id', 'tipo_combustivel_id', 'produto_negociacao_id', 'valor_litro', 'valor_carrada', 'valor_frete', 'nota_fiscal', 'data', 'status'], 'required', 'on' => ['create', 'update'], 'message' => 'Campo obrigatório'],
+            [['caminhao_id', 'cliente_id', 'tipo_combustivel_id', 'produto_negociacao_id', 'valor_carrada', 'status'], 'integer', 'on' => ['create', 'update']],
             [['valor_carrada'], 'checaEstoqueUpdateAluguel', 'on' => ['update']],
-            [['valor_litro'], 'number'],
-            [['data'], 'safe'],
-            [['nota_fiscal', 'observacao'], 'string', 'max' => 500],
+            [['valor_litro'], 'number', 'on' => ['create', 'update']],
+            [['data'], 'safe', 'on' => ['create', 'update']],
+            [['nota_fiscal', 'observacao'], 'string', 'max' => 500, 'on' => ['create', 'update']],
             [['caminhao_id'], 'exist', 'skipOnError' => true, 'targetClass' => Caminhao::className(), 'targetAttribute' => ['caminhao_id' => 'caminhao_id']],
             [['cliente_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['cliente_id' => 'cliente_id']],
             [['tipo_combustivel_id'], 'exist', 'skipOnError' => true, 'targetClass' => TipoCombustivel::className(), 'targetAttribute' => ['tipo_combustivel_id' => 'tipo_combustivel_id']],

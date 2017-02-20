@@ -65,14 +65,17 @@ class CaminhaoClienteController extends Controller {
         $model->status = 1;
 
         $this->layout = 'caminhao';
+        
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = 'json';
+            return ActiveForm::validate($model);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
             $model->save();
-
-
-
+            
             Yii::$app->session->setFlash('success', ['body' => 'Aluguel registrado com sucesso!']);
             return $this->redirect(['index']);
         } else {

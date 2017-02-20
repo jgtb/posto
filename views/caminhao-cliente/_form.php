@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
-use app\models\Caminhao;
 use app\models\Cliente;
 use app\models\TipoCombustivel;
 use kartik\money\MaskMoney;
