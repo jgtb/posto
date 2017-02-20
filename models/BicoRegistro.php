@@ -48,7 +48,7 @@ class BicoRegistro extends \yii\db\ActiveRecord {
     }
 
     public function setSaldoValor() {
-        $qtdeLitro = $this->registro_atual - $this->registro_anterior;
+        $qtdeLitro = ($this->registro_atual - $this->registro_anterior) - $this->retorno;
 
         $modelsCompra = ProdutoNegociacao::find()
                 ->where(['negociacao_id' => 2, 'status' => 1, 'posto_id' => Yii::$app->user->identity->posto_id])
