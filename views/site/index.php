@@ -60,7 +60,7 @@ $this->title = Yii::$app->user->identity->posto_id != 0 ? Yii::$app->user->ident
                                                     return $model->descricao;
                                                 }, 'group' => true],
                                             ['attribute' => 'qtde', 'label' => 'Quantidade', 'value' => function ($model) use ($modelPosto) {
-                                                    return $model->getQuantidade($modelPosto->posto_id);
+                                                    return number_format($model->getQuantidade($modelPosto->posto_id), 0, '.', '.');
                                                 }, 'group' => true],
                                         ],
                                     ]);

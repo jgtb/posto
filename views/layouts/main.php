@@ -71,7 +71,7 @@ NProgressAsset::register($this);
             <div class="container">
                 <?=
                 Breadcrumbs::widget([
-                    'homeLink' => ['label' => Yii::$app->user->isGuest ? 'My Company' : 'Página Principal', 'url' => ['/site/index']],
+                    'homeLink' => ['label' => Yii::$app->user->isGuest ? 'My Company' : 'Início', 'url' => ['/site/index']],
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ])
                 ?>

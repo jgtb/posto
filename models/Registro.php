@@ -83,32 +83,20 @@ class Registro extends \yii\db\ActiveRecord {
 
     public function deleteRegistros() {
         $modelsRegistro = Registro::find()
-                ->where(['posto_id' => Yii::$app->user->identity->posto_id])
-                ->andWhere(['>', 'registro_id', $this->registro_id])
+                ->where(['>=', 'registro_id', $this->registro_id])
+                ->andWhere(['posto_id' => $this->posto_id])
                 ->all();
-
-        if ($modelsRegistro) {
-            foreach ($modelsRegistro as $modelRegistro) {
-                $modelsBicoRegistro = BicoRegistro::findAll(['registro_id' => $modelRegistro->registro_id]);
-                if ($modelsBicoRegistro) {
-                    foreach ($modelsBicoRegistro as $modelBicoRegistro) {
-                        $modelBicoRegistro->delete();
-                    }
+        foreach ($modelsRegistro as $modelRegistro) {
+            $modelsBicoRegistro = BicoRegistro::findAll(['registro_id' => $modelRegistro->registro_id]);
+            foreach ($modelsBicoRegistro as $modelBicoRegistro) {
+                $modelsValorSaida = ValorSaida::findAll(['bico_registro_id' => $modelBicoRegistro->bico_registro_id]);
+                foreach ($modelsValorSaida as $modelValorSaida) {
+                    ValorSaida::findOne(['valor_saida_id' => $modelValorSaida->valor_saida_id])->delete();
                 }
+                BicoRegistro::findOne(['bico_registro_id' => $modelBicoRegistro->bico_registro_id])->delete();
             }
-        }
-        Registro::findOne(['registro_id' => $this->registro_id])->delete();
-    }
-
-    public function deleteAllBicoRegistro() {
-        $modelsBicoRegistro = BicoRegistro::findAll(['registro_id' => $this->registro_id]);
-
-        foreach ($modelsBicoRegistro as $modelBicoRegistro) {
-            $modelsValorSaida = ValorSaida::findAll(['bico_registro_id' => $modelBicoRegistro->bico_registro_id]);
-            foreach ($modelsValorSaida as $modelValorSaida) {
-                ValorSaida::findOne(['valor_saida_id' => $modelValorSaida->valor_saida_id])->delete();
-            }
-            BicoRegistro::findOne(['bico_registro_id' => $modelBicoRegistro->bico_registro_id])->delete();
+            Registro::findOne(['registro_id' => $modelRegistro->registro_id])->delete();
         }
     }
+
 }

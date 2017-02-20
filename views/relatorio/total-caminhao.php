@@ -38,15 +38,17 @@ foreach ($modelsCaminhao as $modelCaminhao) {
     <table class="table table-striped table-bordered text-center">
         <thead>
             <tr>
-                <td colspan="6">' . $modelCaminhao->descricao . '</td>
+                <td colspan="8" class="text-bold text-uppercase" style="vertical-align: middle;">' . $modelCaminhao->descricao . '</td>
             </tr>
             <tr>
-                <td>Cliente</td>
-                <td>Data</td>
-                <td>Quantidade #Litro</td>
-                <td>Valor #Litro</td>
-                <td>Valor #Frete</td>
-                <td>Total</td>
+                <td class="text-bold" style="vertical-align: middle;">Cliente</td>
+                <td class="text-bold" style="vertical-align: middle;">Combustível</td>
+                <td class="text-bold" style="vertical-align: middle;">Data</td>
+                <td class="text-bold" style="vertical-align: middle;">Quantidade #Litro</td>
+                <td class="text-bold" style="vertical-align: middle;">Valor #Litro</td>
+                <td class="text-bold" style="vertical-align: middle;">Valor #Frete</td>
+                <td class="text-bold" style="vertical-align: middle;">Nota Fiscal</td>
+                <td class="text-bold" style="vertical-align: middle;">Total</td>
             </tr>
         </thead>
     ';
@@ -56,18 +58,20 @@ foreach ($modelsCaminhao as $modelCaminhao) {
     foreach ($modelsCaminhaoCliente as $modelCaminhaoCliente) {
 
         $table .= '<tr>'
-                . '<td>' . $modelCaminhaoCliente->cliente->nome . '</td>'
-                . '<td>' . date('d/m/Y', strtotime($modelCaminhaoCliente->data)) . '</td>'
-                . '<td>' . $modelCaminhaoCliente->valor_carrada . '</td>'
-                . '<td>R$ ' . number_format($modelCaminhaoCliente->valor_litro, 2, ',', '.') . '</td>'
-                . '<td>R$ ' . number_format($modelCaminhaoCliente->valor_frete, 2, ',', '.') . '</td>'
-                . '<td>R$ ' . number_format(($modelCaminhaoCliente->valor_frete * $modelCaminhaoCliente->valor_carrada), 2, ',', '.') . '</td>'
+                . '<td style="vertical-align: middle;">' . $modelCaminhaoCliente->cliente->nome . '</td>'
+                . '<td style="vertical-align: middle;">' . $modelCaminhaoCliente->tipoCombustivel->descricao . '</td>'
+                . '<td style="vertical-align: middle;">' . date('d/m/Y', strtotime($modelCaminhaoCliente->data)) . '</td>'
+                . '<td style="vertical-align: middle;">' . number_format($modelCaminhaoCliente->valor_carrada, 0, '.', '.') . '</td>'
+                . '<td style="vertical-align: middle;">R$ ' . number_format($modelCaminhaoCliente->valor_litro, 2, ',', '.') . '</td>'
+                . '<td style="vertical-align: middle;">R$ ' . number_format($modelCaminhaoCliente->valor_frete, 2, ',', '.') . '</td>'
+                . '<td style="vertical-align: middle;">' . $modelCaminhaoCliente->nota_fiscal . '</td>'
+                . '<td class="text-bold" style="vertical-align: middle;">R$ ' . number_format(($modelCaminhaoCliente->valor_frete * $modelCaminhaoCliente->valor_carrada), 2, ',', '.') . '</td>'
                 . '</tr>';
         $totalCaminhao[$modelCaminhao->caminhao_id] += ($modelCaminhaoCliente->valor_frete * $modelCaminhaoCliente->valor_carrada);
         $totalCaminhaoGeral += ($modelCaminhaoCliente->valor_frete * $modelCaminhaoCliente->valor_carrada);
     }
 
-    $table .= '<tr><td colspan="6">Total: R$ ' . number_format($totalCaminhao[$modelCaminhao->caminhao_id], 2, ',', '.') . '</td></tr>';
+    $table .= '<tr><td colspan="8" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalCaminhao[$modelCaminhao->caminhao_id], 2, ',', '.') . '</td></tr>';
 
     $table .= '</tbody>';
 
@@ -86,11 +90,11 @@ $table = '
     <table class="table table-striped table-bordered text-center">
         <thead>
             <tr>
-                <td colspan="2">Despesas</td>
+                <td colspan="2" class="text-bold text-uppercase" style="vertical-align: middle;">Despesas</td>
             </tr>
             <tr>
-                <td>Categoria</td>
-                <td>Total</td>
+                <td class="text-bold">Categoria</td>
+                <td class="text-bold">Total</td>
             </tr>
         </thead>
     ';
@@ -101,33 +105,38 @@ foreach ($modelsTipoDespesa as $modelTipoDespesa) {
     $totalTipoDespesa = Despesa::find()->where(['between', 'data_vencimento', $model->data_inicial, $model->data_final])->andWhere(['referencial' => 2, 'status' => 1])->sum('despesa.valor');
     $table .= '<tr>'
             . '<td>' . $modelTipoDespesa->descricao . '</td>'
-            . '<td>R$ ' . number_format($totalTipoDespesa, 2, ',', '.') . '</td>'
+            . '<td class="text-bold" style="vertical-align: middle;">R$ ' . number_format($totalTipoDespesa, 2, ',', '.') . '</td>'
             . '</tr>';
     $totalDespesa += $totalTipoDespesa;
 }
 
-$table .= '<tr><td colspan="2">Total: R$ ' . number_format($totalDespesa, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="2" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalDespesa, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 
 $table .= '</table>';
 
-if ($modelsTipoDespesa) $mpdf->WriteHTML($table);
+if ($modelsTipoDespesa)
+    $mpdf->WriteHTML($table);
 
 $table = '
     <table class="table table-striped table-bordered text-center">
         <thead>
             <tr>
-                <td colspan="2">Resumo Geral</td>
+                <td colspan="2" class="text-bold text-uppercase" style="vertical-align: middle;">Resumo Geral</td>
+            </tr>
+            <tr>
+                <td class="text-bold" style="vertical-align: middle;">Categoria</td>
+                <td class="text-bold" style="vertical-align: middle;">Total</td>
             </tr>
         </thead>
     ';
 
 $table .= '<tbody>';
 
-$table .= '<tr><td>Total Despesa</td><td>Total: R$ ' . number_format($totalDespesa, 2, ',', '.') . '</td></tr>';
-$table .= '<tr><td>Total Receita Bruta</td><td>Total: R$ ' . number_format($totalCaminhaoGeral, 2, ',', '.') . '</td></tr>';
-$table .= '<tr><td>Total Receita Líquida</td><td >Total: R$ ' . number_format($totalCaminhaoGeral - $totalDespesa, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td>Total Despesa</td><td class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalDespesa, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td>Total Receita Bruta</td><td class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalCaminhaoGeral, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td>Total Receita Líquida</td><td class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalCaminhaoGeral - $totalDespesa, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 

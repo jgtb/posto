@@ -44,6 +44,7 @@ NProgressAsset::register($this);
                             ['label' => 'Categorias', 'url' => ['/tipo-despesa'], 'options' => ['class' => Yii::$app->controller->id == 'tipo-despesa' ? 'active' : '']],
                             ['label' => 'Despesas', 'url' => ['/despesa', 'id' => 2], 'options' => ['class' => Yii::$app->controller->id == 'despesa' && $_GET['id'] == 2 ? 'active' : '']],
                         ]],
+                    ['label' => 'Relatórios', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/relatorio/create']],
                     ['label' => Yii::$app->user->identity->email, 'visible' => !Yii::$app->user->isGuest, 'items' => [
                             ['label' => 'Meu Perfil', 'url' => ['/usuario/view', 'id' => Yii::$app->user->identity->usuario_id]],
                             //['label' => 'Meus Postos', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/site/meus-postos']],
@@ -62,7 +63,7 @@ NProgressAsset::register($this);
             <div class="container">
                 <?=
                 Breadcrumbs::widget([
-                    'homeLink' => ['label' => Yii::$app->user->isGuest ? 'My Company' : 'Página Principal', 'url' => ['/site/index']],
+                    'homeLink' => ['label' => Yii::$app->user->isGuest ? 'My Company' : 'Início', 'url' => ['/site/index']],
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ])
                 ?>

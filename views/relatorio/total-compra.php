@@ -44,13 +44,15 @@ foreach ($modelsProduto as $modelProduto) {
     <table class="table table-striped table-bordered text-center">
         <thead>
             <tr>
-                <td colspan="4">' . $modelProduto->descricao . '</td>
+                <td colspan="6" class="text-bold text-uppercase" style="vertical-align: middle;">' . $modelProduto->descricao . '</td>
             </tr>
             <tr>
-                <td>Valor</td>
-                <td>Quantidade</td>
-                <td>Data</td>
-                <td>Total R$</td>
+                <td class="text-bold" style="vertical-align: middle;">Valor</td>
+                <td class="text-bold" style="vertical-align: middle;">Quantidade</td>
+                <td class="text-bold" style="vertical-align: middle;">Nota Fiscal</td>
+                <td class="text-bold" style="vertical-align: middle;">Data</td>
+                <td class="text-bold" style="vertical-align: middle;">Observações</td>
+                <td class="text-bold" style="vertical-align: middle;">Total R$</td>
             </tr>
         </thead>
     ';
@@ -60,11 +62,14 @@ foreach ($modelsProduto as $modelProduto) {
     foreach ($modelsProdutoNegociacao as $modelProdutoNegociacao) {
 
         if ($modelProduto->produto_id == $modelProdutoNegociacao->produto_id) {
+            $observacao = $modelProdutoNegociacao->observacao != NULL ? $modelProdutoNegociacao->observacao : 'Não inserido';
             $table .= '<tr>'
-                    . '<td>R$ ' . number_format($modelProdutoNegociacao->valor, 2, ',', '.') . '</td>'
-                    . '<td>' . $modelProdutoNegociacao->qtde . '</td>'
-                    . '<td>' . date('d/m/Y', strtotime($modelProdutoNegociacao->data)) . '</td>'
-                    . '<td>R$ ' . number_format($modelProdutoNegociacao->qtde * $modelProdutoNegociacao->valor, 2, ',', '.') . '</td>'
+                    . '<td style="vertical-align: middle;">R$ ' . number_format($modelProdutoNegociacao->valor, 2, ',', '.') . '</td>'
+                    . '<td style="vertical-align: middle;">' . number_format($modelProdutoNegociacao->qtde, 0, '.', '.') . '</td>'
+                    . '<td style="vertical-align: middle;">' . $modelProdutoNegociacao->nota_fiscal . '</td>'
+                    . '<td style="vertical-align: middle;">' . date('d/m/Y', strtotime($modelProdutoNegociacao->data)) . '</td>'
+                    . '<td style="vertical-align: middle;">' . $observacao . '</td>'
+                    . '<td class="text-bold" style="vertical-align: middle;">R$ ' . number_format($modelProdutoNegociacao->qtde * $modelProdutoNegociacao->valor, 2, ',', '.') . '</td>'
                     . '</tr>';
 
             $totalProduto[$modelProduto->produto_id] += $modelProdutoNegociacao->qtde * $modelProdutoNegociacao->valor;
@@ -72,7 +77,7 @@ foreach ($modelsProduto as $modelProduto) {
         }
     }
 
-    $table .= '<tr><td colspan="4">Total: R$ ' . number_format($totalProduto[$modelProduto->produto_id], 2, ',', '.') . '</td></tr>';
+    $table .= '<tr><td colspan="6" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalProduto[$modelProduto->produto_id], 2, ',', '.') . '</td></tr>';
 
     $table .= '</tbody>';
 
@@ -85,11 +90,11 @@ $table = '
 <table class="table table-striped table-bordered text-center">
     <thead>
         <tr>
-            <td colspan="2">Total Geral</td>
+            <td colspan="2" class="text-bold text-uppercase" style="vertical-align: middle;">Total Geral</td>
         </tr>
         <tr>
-            <td>Categoria</td>
-            <td>Valor</td>
+            <td class="text-bold" style="vertical-align: middle;">Categoria</td>
+            <td class="text-bold" style="vertical-align: middle;">Valor</td>
         </tr>
     </thead>
 ';
@@ -98,12 +103,12 @@ $table .= '<tbody>';
 
 foreach ($modelsProduto as $modelProduto) {
     $table .= '<tr>'
-            . '<td>' . $modelProduto->descricao . '</td>'
-            . '<td>R$ ' . number_format($totalProduto[$modelProduto->produto_id], 2, ',', '.') . '</td>'
+            . '<td style="vertical-align: middle;">' . $modelProduto->descricao . '</td>'
+            . '<td class="text-bold" style="vertical-align: middle;">R$ ' . number_format($totalProduto[$modelProduto->produto_id], 2, ',', '.') . '</td>'
             . '</tr>';
 }
 
-$table .= '<tr><td colspan="2">Total: R$ ' . number_format($totalGeral, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="2" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalGeral, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 

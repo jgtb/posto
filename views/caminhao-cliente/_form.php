@@ -30,7 +30,7 @@ use kartik\money\MaskMoney;
         ]
     ]);
     ?>
-
+    
     <?= $form->field($model, 'valor_carrada')->textInput() ?>
 
     <?=

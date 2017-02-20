@@ -158,22 +158,22 @@ class Relatorio extends \yii\db\ActiveRecord {
         return $modelsDespesaGeral;
     }
 
-    public function getVendaOutrosGeralQ() {
-        $outrosQTDE = ProdutoNegociacao::find()
+    public function getVendaOutrosGeral() {
+        $modelsVendaOutrosGeral = ProdutoNegociacao::find()
                 ->where(['negociacao_id' => 1, 'status' => 2, 'produto_id' => 3, 'posto_id' => Yii::$app->user->identity->posto_id])
                 ->andWhere(['between', 'data', $this->data_inicial, $this->data_final])
-                ->sum('qtde');
+                ->all();
 
-        return $outrosQTDE;
+        return $modelsVendaOutrosGeral;
     }
 
-    public function getVendaOutrosGeralT() {
-        $outrosValor = ProdutoNegociacao::find()
+    public function getVendaOutrosGeralTotal() {
+        $outrosValorTotal = ProdutoNegociacao::find()
                 ->where(['negociacao_id' => 1, 'status' => 2, 'produto_id' => 3, 'posto_id' => Yii::$app->user->identity->posto_id])
                 ->andWhere(['between', 'data', $this->data_inicial, $this->data_final])
                 ->sum('qtde * valor');
 
-        return $outrosValor;
+        return $outrosValorTotal;
     }
 
 }

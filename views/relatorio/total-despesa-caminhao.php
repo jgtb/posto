@@ -38,12 +38,13 @@ foreach ($modelsTipoDespesa as $modelTipoDespesa) {
     <table class="table table-striped table-bordered text-center">
         <thead>
             <tr>
-                <td colspan="3">' . $modelTipoDespesa->descricao . '</td>
+                <td colspan="4" class="text-bold text-uppercase" style="vertical-align: middle;">' . $modelTipoDespesa->descricao . '</td>
             </tr>
             <tr>
-                <td>Valor</td>
-                <td>Data do Pagamento</td>
-                <td>Observação</td>
+                <td class="text-bold" style="vertical-align: middle;">Valor #Total</td>
+                <td class="text-bold" style="vertical-align: middle;">Data #Vencimento</td>
+                <td class="text-bold" style="vertical-align: middle;">Data #Pagamento</td>
+                <td class="text-bold" style="vertical-align: middle;">Observações</td>
             </tr>
         </thead>
     ';
@@ -54,16 +55,17 @@ foreach ($modelsTipoDespesa as $modelTipoDespesa) {
         $observacao = $modelDespesa->observacao != NULL ? $modelDespesa->observacao : 'Não inserido';
         if ($modelDespesa->tipo_despesa_id == $modelTipoDespesa->tipo_despesa_id) {
             $table .= '<tr>'
-                    . '<td>R$ ' . number_format($modelDespesa->valor, 2, ',', '.') . '</td>'
-                    . '<td>' . date('d/m/Y', strtotime($modelDespesa->data_pagamento)) . '</td>'
-                    . '<td>' . $observacao . '</td>'
+                    . '<td style="vertical-align: middle;">R$ ' . number_format($modelDespesa->valor, 2, ',', '.') . '</td>'
+                    . '<td style="vertical-align: middle;">' . date('d/m/Y', strtotime($modelDespesa->data_vencimento)) . '</td>'
+                    . '<td style="vertical-align: middle;">' . date('d/m/Y', strtotime($modelDespesa->data_pagamento)) . '</td>'
+                    . '<td style="vertical-align: middle;">' . $observacao . '</td>'
                     . '</tr>';
             $totalTipoDespesa[$modelTipoDespesa->tipo_despesa_id] += $modelDespesa->valor;
             $totalGeral += $modelDespesa->valor;
         }
     }
 
-    $table .= '<tr><td colspan="3">Total: R$ ' . number_format($totalTipoDespesa[$modelTipoDespesa->tipo_despesa_id], 2, ',', '.') . '</td></tr>';
+    $table .= '<tr><td colspan="4" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalTipoDespesa[$modelTipoDespesa->tipo_despesa_id], 2, ',', '.') . '</td></tr>';
 
     $table .= '</tbody>';
 
@@ -76,11 +78,11 @@ $table = '
 <table class="table table-striped table-bordered text-center">
     <thead>
         <tr>
-            <td colspan="2">Total Geral</td>
+            <td colspan="2" class="text-bold text-uppercase">Total Geral</td>
         </tr>
         <tr>
-            <td>Categoria</td>
-            <td>Valor</td>
+            <td class="text-bold">Categoria</td>
+            <td class="text-bold">Valor</td>
         </tr>
     </thead>
 ';
@@ -90,11 +92,11 @@ $table .= '<tbody>';
 foreach ($modelsTipoDespesa as $modelTipoDespesa) {
     $table .= '<tr>'
             . '<td>' . $modelTipoDespesa->descricao . '</td>'
-            . '<td>R$ ' . number_format($totalTipoDespesa[$modelTipoDespesa->tipo_despesa_id], 2, ',', '.') . '</td>'
+            . '<td class="text-bold" style="vertical-align: middle;">R$ ' . number_format($totalTipoDespesa[$modelTipoDespesa->tipo_despesa_id], 2, ',', '.') . '</td>'
             . '</tr>';
 }
 
-$table .= '<tr><td colspan="2">Total: R$ ' . number_format($totalGeral, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="2" class="text-bold">Total: R$ ' . number_format($totalGeral, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 

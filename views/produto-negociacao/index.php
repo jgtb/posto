@@ -45,8 +45,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return 'R$ ' . number_format($model->valor, 2, ',', '.');
                 }],
             ['attribute' => 'qtde', 'format' => 'raw', 'value' => function ($model) {
-                    $valorSaida = $model->negociacao_id == 2 ? 'Saída #' . $model->getSaida() : '';
-                    return $model->qtde . '<br>' . $valorSaida;
+                    $valorSaida = $model->negociacao_id == 2 ? 'Saída #' . number_format($model->getSaida(), 0, '.', '.') : '';
+                    return number_format($model->qtde, 0, '.', '.') . '<br>' . $valorSaida;
                 }],
             ['attribute' => 'nota_fiscal', 'value' => function ($model) {
                     return $model->nota_fiscal;

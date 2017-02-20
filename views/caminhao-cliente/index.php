@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return 'R$ ' . number_format($model->valor_litro, 2, ',', '.');
                 }],
             ['attribute' => 'valor_carrada', 'value' => function ($model) {
-                    return $model->valor_carrada;
+                    return number_format($model->valor_carrada, 0, '.', '.');
                 }],
             ['attribute' => 'valor_frete', 'format' => 'raw', 'filter' => MaskMoney::widget(['model' => $searchModel, 'attribute' => 'valor_litro', 'pluginOptions' => ['prefix' => 'R$ ', 'allowNegative' => false, 'allowZero' => true, 'thousands' => '.', 'decimal' => ',',]]), 'value' => function ($model) {
                     return 'R$ ' . number_format($model->valor_frete, 2, ',', '.');

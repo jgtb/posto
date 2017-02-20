@@ -1,3 +1,15 @@
 table {
     page-break-inside: avoid;
 }
+
+.middle {
+    vertical-align: middle;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
