@@ -177,6 +177,7 @@ class RegistroController extends Controller {
 
     public function actionDelete($id) {
         $model = $this->findModel($id);
+        $model->deleteRegistros();
         
         Yii::$app->session->setFlash('success', ['body' => 'Registro excluído com sucesso!']);
         return $this->redirect(['index']);
