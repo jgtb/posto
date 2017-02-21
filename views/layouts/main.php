@@ -40,13 +40,8 @@ NProgressAsset::register($this);
                     ['label' => 'Manutenção', 'visible' => Yii::$app->user->identity->usuario_id == 1, 'url' => ['/valor-combustivel/update', 'id' => Yii::$app->user->identity->posto_id]],
                     //['label' => 'Responsáveis', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/usuario', 'id' => 2], 'options' => ['class' => Yii::$app->controller->id == 'usuario' && $_GET['id'] == 2 ? 'active' : '']],
                     ['label' => 'Registros', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/registro'], 'options' => ['class' => Yii::$app->controller->id == 'registro' ? 'active' : '']],
-                    ['label' => 'Produto', 'visible' => !Yii::$app->user->isGuest, 'items' => [
-                            //['label' => 'Produtos', 'url' => ['/produto'], 'options' => ['class' => Yii::$app->controller->id == 'produto' && Yii::$app->controller->action->id != 'estoque' ? 'active' : '']],
-                            ['label' => 'Compras', 'url' => ['/produto-negociacao', 'id' => 2], 'options' => ['class' => Yii::$app->controller->id == 'produto-negociacao' && $_GET['id'] == 2 ? 'active' : '']],
-                            ['label' => 'Vendas', 'url' => ['/produto-negociacao', 'id' => 1], 'options' => ['class' => Yii::$app->controller->id == 'produto-negociacao' && $_GET['id'] == 1 ? 'active' : '']],
-                            //['label' => 'Vendas', 'url' => ['/produto-negociacao', 'id' => 1], 'options' => ['class' => Yii::$app->controller->id == 'produto-negociacao' && $_GET['id'] == 1 ? 'active' : '']],
-                            ['label' => 'Estoque', 'url' => ['/produto/estoque']],
-                        ]],
+                    ['label' => 'Compras', 'visible' => !Yii::$app->user->isGuest, 'url' => ['/produto-negociacao', 'id' => 2], 'options' => ['class' => Yii::$app->controller->id == 'produto-negociacao' && $_GET['id'] == 2 ? 'active' : '']],
+                    ['label' => 'Vendas', 'visible' => !Yii::$app->user->isGuest, 'url' => ['/produto-negociacao', 'id' => 1], 'options' => ['class' => Yii::$app->controller->id == 'produto-negociacao' && $_GET['id'] == 1 ? 'active' : '']],
                     ['label' => 'Despesa', 'visible' => !Yii::$app->user->isGuest, 'items' => [
                             ['label' => 'Categorias', 'url' => ['/tipo-despesa'], 'options' => ['class' => Yii::$app->controller->id == 'tipo-despesa' ? 'active' : '']],
                             ['label' => 'Despesas', 'url' => ['/despesa', 'id' => 1], 'options' => ['class' => Yii::$app->controller->id == 'despesa' && $_GET['id'] == 1 ? 'active' : '']],

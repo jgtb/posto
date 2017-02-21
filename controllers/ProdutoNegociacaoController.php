@@ -73,7 +73,7 @@ class ProdutoNegociacaoController extends Controller {
         $model->valor = 0;
         $model->valor_frete = 0;
         $model->produto_id = $id == 1 ? 3 : '';
-        $model->status = 1;
+        $model->status = $id == 1 ? 2 : 1;
 
         $this->layout = 'main';
 
