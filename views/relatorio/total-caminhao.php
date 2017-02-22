@@ -28,10 +28,12 @@ $mpdf->WriteHTML('<h5 class="text-center">Até: ' . date('d/m/Y', strtotime($mod
 $modelsCliente = Cliente::find()
         ->leftJoin('caminhao_cliente', 'cliente.cliente_id = caminhao_cliente.cliente_id')
         ->where(['between', 'caminhao_cliente.data', $model->data_inicial, $model->data_final])
+        ->orderBy(['caminhao_cliente.data' => SORT_DESC])
         ->all();
 
 $modelsCaminhaoCliente = CaminhaoCliente::find()
         ->where(['between', 'caminhao_cliente.data', $model->data_inicial, $model->data_final])
+        ->orderBy(['caminhao_cliente.data' => SORT_DESC])
         ->all();
 
 foreach ($modelsCliente as $modelCliente) {
@@ -87,11 +89,13 @@ $modelsTipoDespesa = TipoDespesa::find()
         ->leftJoin('despesa', 'tipo_despesa.tipo_despesa_id = despesa.tipo_despesa_id')
         ->where(['between', 'data_vencimento', $model->data_inicial, $model->data_final])
         ->andWhere(['despesa.referencial' => 2, 'despesa.status' => 1])
+        ->orderBy(['despesa.data' => SORT_DESC])
         ->all();
 
 $modelsDespesa = Despesa::find()
         ->where(['between', 'data_vencimento', $model->data_inicial, $model->data_final])
         ->andWhere(['referencial' => 2, 'status' => 1])
+        ->orderBy(['despesa.data' => SORT_DESC])
         ->all();
 
 foreach ($modelsTipoDespesa as $modelTipoDespesa) {
@@ -158,7 +162,7 @@ foreach ($modelsCliente as $modelCliente) {
             . '</tr>';
 }
 
-$table .= '<tr><td colspan="2" class="text-bold" style="vertical-align: middle;">Total Geral #Clientes: R$ ' . number_format($totalClienteGeral, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="2" class="text-bold" style="vertical-align: middle;">Total Geral #Alugueis: R$ ' . number_format($totalClienteGeral, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 

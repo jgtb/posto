@@ -96,7 +96,7 @@ class DespesaController extends Controller {
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->data_vencimento = date('Y-m-d', strtotime(str_replace('/', '-', $model->data_vencimento)));
-            $model->data_pagamento = $model->data_pagamento != NULL ? date('Y-m-d', strtotime(str_replace('/', '-', $model->data_vencimento))) : NULL;
+            $model->data_pagamento = $model->data_pagamento != NULL ? date('Y-m-d', strtotime(str_replace('/', '-', $model->data_pagamento))) : NULL;
             $model->save();
 
             Yii::$app->session->setFlash('success', ['body' => 'Despesa alterada com sucesso!']);

@@ -23,7 +23,7 @@ class ProdutoNegociacaoSearch extends ProdutoNegociacao {
         $query = ProdutoNegociacao::find()
                 ->joinWith('produto')
                 ->where(['negociacao_id' => $id, 'posto_id' => Yii::$app->user->identity->posto_id, 'produto_negociacao.status' => [1, 2]])
-                ->orderBy(['produto_negociacao.produto_negociacao_id' => SORT_DESC]);
+                ->orderBy(['produto_negociacao.data' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

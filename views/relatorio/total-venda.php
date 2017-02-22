@@ -30,6 +30,7 @@ $modelsProduto = Produto::find()
         ->andWhere(['posto_id' => Yii::$app->user->identity->posto_id])
         ->andWhere(['negociacao_id' => 1])
         ->andWhere(['produto_negociacao.status' => 2])
+        ->orderBy(['produto_negociacao.data' => SORT_DESC])
         ->all();
 
 $modelsProdutoNegociacao = ProdutoNegociacao::find()
@@ -37,6 +38,7 @@ $modelsProdutoNegociacao = ProdutoNegociacao::find()
         ->andWhere(['posto_id' => Yii::$app->user->identity->posto_id])
         ->andWhere(['negociacao_id' => 1])
         ->andWhere(['produto_negociacao.status' => 2])
+        ->orderBy(['produto_negociacao.data' => SORT_DESC])
         ->all();
 
 $modelsGasolina = BicoRegistro::find()
@@ -46,6 +48,7 @@ $modelsGasolina = BicoRegistro::find()
         ->andWhere(['bico.tipo_combustivel_id' => 1])
         ->andWhere(['registro.posto_id' => Yii::$app->user->identity->posto_id])
         ->andWhere(['registro.status' => 1])
+        ->orderBy(['registro.data' => SORT_DESC])
         ->all();
 
 $table = '
@@ -97,6 +100,7 @@ $modelsDiesel = BicoRegistro::find()
         ->andWhere(['bico.tipo_combustivel_id' => 2])
         ->andWhere(['registro.posto_id' => Yii::$app->user->identity->posto_id])
         ->andWhere(['registro.status' => 1])
+        ->orderBy(['registro.data' => SORT_DESC])
         ->all();
 
 $table = '

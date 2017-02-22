@@ -25,7 +25,7 @@ class CaminhaoClienteSearch extends CaminhaoCliente {
                 ->joinWith('cliente')
                 ->joinWith('tipoCombustivel')
                 ->where(['caminhao_cliente.status' => 1])
-                ->orderBy(['caminhao_cliente.caminhao_cliente_id' => SORT_DESC]);
+                ->orderBy(['caminhao_cliente.data' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

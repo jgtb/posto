@@ -27,10 +27,12 @@ $modelsTipoDespesa = TipoDespesa::find()
         ->leftJoin('despesa', 'tipo_despesa.tipo_despesa_id = despesa.tipo_despesa_id')
         ->where(['between', 'data_vencimento', $model->data_inicial, $model->data_final])
         ->andWhere(['posto_id' => Yii::$app->user->identity->posto_id, 'referencial' => 1, 'despesa.status' => 1])
+        ->orderBy(['despesa.data_vencimento' => SORT_DESC])
         ->all();
 $modelsDespesa = Despesa::find()
         ->where(['between', 'data_vencimento', $model->data_inicial, $model->data_final])
         ->andWhere(['posto_id' => Yii::$app->user->identity->posto_id, 'referencial' => 1, 'status' => 1])
+        ->orderBy(['despesa.data_vencimento' => SORT_DESC])
         ->all();
 
 foreach ($modelsTipoDespesa as $modelTipoDespesa) {

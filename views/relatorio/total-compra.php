@@ -29,6 +29,7 @@ $modelsProduto = Produto::find()
         ->andWhere(['posto_id' => Yii::$app->user->identity->posto_id])
         ->andWhere(['negociacao_id' => 2])
         ->andWhere(['produto_negociacao.status' => 1])
+        ->orderBy(['produto_negociacao.data' => SORT_DESC])
         ->all();
 
 $modelsProdutoNegociacao = ProdutoNegociacao::find()
@@ -36,6 +37,7 @@ $modelsProdutoNegociacao = ProdutoNegociacao::find()
         ->andWhere(['posto_id' => Yii::$app->user->identity->posto_id])
         ->andWhere(['negociacao_id' => 2])
         ->andWhere(['produto_negociacao.status' => 1])
+        ->orderBy(['produto_negociacao.data' => SORT_DESC])
         ->all();
 
 foreach ($modelsProduto as $modelProduto) {

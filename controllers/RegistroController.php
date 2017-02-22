@@ -147,7 +147,7 @@ class RegistroController extends Controller {
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            $model->deleteAllBicoRegistro();
+            $model->deleteBicoRegistros();
 
             $postBicoRegistro = $_POST['BicoRegistro'];
             if ($postBicoRegistro) {

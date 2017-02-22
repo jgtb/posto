@@ -81,6 +81,17 @@ class Registro extends \yii\db\ActiveRecord {
         return $result;
     }
 
+    public function deleteBicoRegistros() {
+        $modelsBicoRegistro = BicoRegistro::findAll(['registro_id' => $this->registro_id]);
+        foreach ($modelsBicoRegistro as $modelBicoRegistro) {
+            $modelsValorSaida = ValorSaida::findAll(['bico_registro_id' => $modelBicoRegistro->bico_registro_id]);
+            foreach ($modelsValorSaida as $modelValorSaida) {
+                ValorSaida::findOne(['valor_saida_id' => $modelValorSaida->valor_saida_id])->delete();
+            }
+            BicoRegistro::findOne(['bico_registro_id' => $modelBicoRegistro->bico_registro_id])->delete();
+        }
+    }
+
     public function deleteRegistros() {
         $modelsRegistro = Registro::find()
                 ->where(['>=', 'registro_id', $this->registro_id])

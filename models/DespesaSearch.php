@@ -22,7 +22,7 @@ class DespesaSearch extends Despesa {
     public function search($params, $id) {
         $query = Despesa::find()
                 ->joinWith('tipoDespesa')
-                ->orderBy(['despesa.despesa_id' => SORT_DESC]);
+                ->orderBy(['despesa.data_vencimento' => SORT_DESC]);
 
         $id == 1 ? $query->where(['posto_id' => Yii::$app->user->identity->posto_id, 'referencial' => $id]) :
                         $query->where(['referencial' => $id]);
