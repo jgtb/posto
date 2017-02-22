@@ -87,7 +87,7 @@ class CaminhaoClienteController extends Controller {
                 $modelDespesa->tipo_despesa_id = 1;
                 $modelDespesa->produto_negociacao_id = $modelProdutoNegociacao->produto_negociacao_id;
                 $modelDespesa->referencial = 1;
-                $modelDespesa->valor = $model->valor_litro * $model->valor_frete;
+                $modelDespesa->valor = $model->valor_carrada * $model->valor_frete;
                 $modelDespesa->data_vencimento = $model->data;
                 $modelDespesa->data_pagamento = $model->data;
                 $modelDespesa->observacao = $model->observacao;
@@ -129,7 +129,7 @@ class CaminhaoClienteController extends Controller {
                 $modelProdutoNegociacao->save();
 
                 $modelDespesa = Despesa::findOne(['produto_negociacao_id' => $model->produto_negociacao_id]);
-                $modelDespesa->valor = $model->valor_litro * $model->valor_frete;
+                $modelDespesa->valor = $model->valor_carrada * $model->valor_frete;
                 $modelDespesa->data_vencimento = $model->data;
                 $modelDespesa->data_pagamento = $model->data;
                 $modelDespesa->observacao = $model->observacao;
