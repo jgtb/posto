@@ -14,7 +14,9 @@ $mpdf->WriteHTML($css, 1);
 
 $mpdf->SetTitle('Relatorio #Despesas Carro Tanque');
 
-$mpdf->WriteHTML('<h2 class="text-center">Relatório Despesas #Carro Tanque</h2>');
+$mpdf->WriteHTML('<h2 class="text-center">Relatório #Despesas</h2>');
+
+$mpdf->WriteHTML('<h3 class="text-center">Carro Tanque</h3>');
 
 $mpdf->WriteHTML('<h4 class="text-center">Período:</h4>');
 
@@ -61,11 +63,11 @@ foreach ($modelsTipoDespesa as $modelTipoDespesa) {
                     . '<td style="vertical-align: middle;">' . $observacao . '</td>'
                     . '</tr>';
             $totalTipoDespesa[$modelTipoDespesa->tipo_despesa_id] += $modelDespesa->valor;
-            $totalGeral += $modelDespesa->valor;
+            $totalDespesa += $modelDespesa->valor;
         }
     }
 
-    $table .= '<tr><td colspan="4" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalTipoDespesa[$modelTipoDespesa->tipo_despesa_id], 2, ',', '.') . '</td></tr>';
+    $table .= '<tr><td colspan="4" class="text-bold" style="vertical-align: middle;">Total ' . $modelTipoDespesa->descricao . ': R$ ' . number_format($totalTipoDespesa[$modelTipoDespesa->tipo_despesa_id], 2, ',', '.') . '</td></tr>';
 
     $table .= '</tbody>';
 
@@ -78,7 +80,7 @@ $table = '
 <table class="table table-striped table-bordered text-center">
     <thead>
         <tr>
-            <td colspan="2" class="text-bold text-uppercase">Total Geral</td>
+            <td colspan="2" class="text-bold text-uppercase">Resumo Geral</td>
         </tr>
         <tr>
             <td class="text-bold">Categoria</td>
@@ -96,7 +98,7 @@ foreach ($modelsTipoDespesa as $modelTipoDespesa) {
             . '</tr>';
 }
 
-$table .= '<tr><td colspan="2" class="text-bold">Total: R$ ' . number_format($totalGeral, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="2" class="text-bold">Total Geral: R$ ' . number_format($totalDespesa, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 

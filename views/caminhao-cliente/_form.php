@@ -13,9 +13,7 @@ use kartik\money\MaskMoney;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?php if ($model->isNewRecord || !in_array($model->cliente_id, [1, 2])) : ?>
-        <?= $form->field($model, 'cliente_id')->dropDownList(ArrayHelper::map(Cliente::findAll(['status' => 1]), 'cliente_id', 'nome'), ['prompt' => 'Selecione o Cliente']) ?>
-    <?php endif; ?>
+    <?= $form->field($model, 'cliente_id')->dropDownList(ArrayHelper::map(Cliente::findAll(['status' => 1]), 'cliente_id', 'nome'), ['prompt' => 'Selecione o Cliente', 'disabled' => !$model->isNewRecord ? true : false]) ?>
 
     <?= $form->field($model, 'tipo_combustivel_id')->dropDownList(ArrayHelper::map(TipoCombustivel::find()->all(), 'tipo_combustivel_id', 'descricao'), ['prompt' => 'Selecione o Combustível', 'disabled' => !$model->isNewRecord && in_array($model->cliente_id, [1, 2]) ? true : false]) ?>
 
@@ -30,7 +28,7 @@ use kartik\money\MaskMoney;
         ]
     ]);
     ?>
-    
+
     <?= $form->field($model, 'valor_carrada')->textInput() ?>
 
     <?=

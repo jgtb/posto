@@ -15,7 +15,7 @@ $mpdf->WriteHTML($css, 1);
 
 $mpdf->SetTitle('Relatorio #Vendas');
 
-$mpdf->WriteHTML('<h2 class="text-center">Relatório de Vendas</h2>');
+$mpdf->WriteHTML('<h2 class="text-center">Relatório #Vendas</h2>');
 
 $mpdf->WriteHTML('<h3 class="text-center">Posto #' . Yii::$app->user->identity->getPosto() . '</h3>');
 
@@ -81,7 +81,7 @@ foreach ($modelsGasolina as $modelGasolina) {
     $totalGasolina += (($modelGasolina->registro_atual - $modelGasolina->registro_anterior) - $modelGasolina->retorno) * $modelGasolina->valor;
 }
 
-$table .= '<tr><td colspan="6" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalGasolina, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="6" class="text-bold" style="vertical-align: middle;">Total Gasolina: R$ ' . number_format($totalGasolina, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 
@@ -132,7 +132,7 @@ foreach ($modelsDiesel as $modelDiesel) {
     $totalDiesel += (($modelDiesel->registro_atual - $modelDiesel->registro_anterior) - $modelDiesel->retorno) * $modelDiesel->valor;
 }
 
-$table .= '<tr><td colspan="6" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalDiesel, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="6" class="text-bold" style="vertical-align: middle;">Total Diesel: R$ ' . number_format($totalDiesel, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 
@@ -180,7 +180,7 @@ foreach ($modelsProduto as $modelProduto) {
         }
     }
 
-    $table .= '<tr><td colspan="6" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalProduto[$modelProduto->produto_id], 2, ',', '.') . '</td></tr>';
+    $table .= '<tr><td colspan="6" class="text-bold" style="vertical-align: middle;">Total ' . $modelProduto->descricao . ': R$ ' . number_format($totalProduto[$modelProduto->produto_id], 2, ',', '.') . '</td></tr>';
 
     $table .= '</tbody>';
 
@@ -193,7 +193,7 @@ $table = '
 <table class="table table-striped table-bordered text-center">
     <thead>
         <tr>
-            <td colspan="2" class="text-bold text-uppercase" style="vertical-align: middle;">Total Geral</td>
+            <td colspan="2" class="text-bold text-uppercase" style="vertical-align: middle;">Resumo Geral</td>
         </tr>
         <tr>
             <td class="text-bold" style="vertical-align: middle;">Categoria</td>
@@ -217,8 +217,7 @@ foreach ($modelsProduto as $modelProduto) {
             . '</tr>';
 }
 
-
-$table .= '<tr><td colspan="2" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalGeral + $totalGasolina + $totalDiesel, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="2" class="text-bold" style="vertical-align: middle;">Total Geral: R$ ' . number_format($totalGeral + $totalGasolina + $totalDiesel, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 

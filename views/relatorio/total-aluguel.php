@@ -1,7 +1,7 @@
 <?php
 
+use app\models\Cliente;
 use app\models\CaminhaoCliente;
-use app\models\TipoCombustivel;
 
 include("../vendor/mpdf/mpdf/mpdf.php");
 
@@ -23,22 +23,27 @@ $mpdf->WriteHTML('<h4 class="text-center">Período:</h4>');
 $mpdf->WriteHTML('<h5 class="text-center">De: ' . date('d/m/Y', strtotime($model->data_inicial)) . '</h5>');
 $mpdf->WriteHTML('<h5 class="text-center">Até: ' . date('d/m/Y', strtotime($model->data_final)) . '</h5>');
 
-$modelsTipoCombustivel = TipoCombustivel::find()->all();
-$modelsCaminhaoCliente = CaminhaoCliente::find()
-        ->where(['between', 'data', $model->data_inicial, $model->data_final])
-        ->andWhere(['status' => 1])
+
+$modelsCliente = Cliente::find()
+        ->leftJoin('caminhao_cliente', 'cliente.cliente_id = caminhao_cliente.cliente_id')
+        ->where(['between', 'caminhao_cliente.data', $model->data_inicial, $model->data_final])
         ->all();
 
-$table = '
+$modelsCaminhaoCliente = CaminhaoCliente::find()
+        ->where(['between', 'caminhao_cliente.data', $model->data_inicial, $model->data_final])
+        ->all();
+
+foreach ($modelsCliente as $modelCliente) {
+
+    $table = '
     <table class="table table-striped table-bordered text-center">
         <thead>
             <tr>
-                <td colspan="8" class="text-uppercase text-bold">Alugueis</td>
+                <td colspan="7" class="text-bold text-uppercase" style="vertical-align: middle;">' . $modelCliente->nome . '</td>
             </tr>
             <tr>
-                <td class="text-bold" style="vertical-align: middle;">Data</td>
-                <td class="text-bold" style="vertical-align: middle;">Cliente</td>
                 <td class="text-bold" style="vertical-align: middle;">Combustível</td>
+                <td class="text-bold" style="vertical-align: middle;">Data</td>
                 <td class="text-bold" style="vertical-align: middle;">Quantidade #Litro</td>
                 <td class="text-bold" style="vertical-align: middle;">Valor #Litro</td>
                 <td class="text-bold" style="vertical-align: middle;">Valor #Frete</td>
@@ -48,62 +53,58 @@ $table = '
         </thead>
     ';
 
-$table .= '<tbody>';
+    $table .= '<tbody>';
 
-foreach ($modelsTipoCombustivel as $modelTipoCombustivel) {
-    $totalTipoCombustivel = [];
     foreach ($modelsCaminhaoCliente as $modelCaminhaoCliente) {
 
-        if ($modelTipoCombustivel->tipo_combustivel_id == $modelCaminhaoCliente->tipo_combustivel_id) {
-
+        if ($modelCaminhaoCliente->cliente_id == $modelCliente->cliente_id) {
             $table .= '<tr>'
+                    . '<td style="vertical-align: middle;">' . $modelCaminhaoCliente->tipoCombustivel->descricao . '</td>'
                     . '<td style="vertical-align: middle;">' . date('d/m/Y', strtotime($modelCaminhaoCliente->data)) . '</td>'
-                    . '<td style="vertical-align: middle;">' . $modelCaminhaoCliente->cliente->nome . '</td>'
-                    . '<td style="vertical-align: middle;">' . $modelTipoCombustivel->descricao . '</td>'
                     . '<td style="vertical-align: middle;">' . number_format($modelCaminhaoCliente->valor_carrada, 0, '.', '.') . '</td>'
                     . '<td style="vertical-align: middle;">R$ ' . number_format($modelCaminhaoCliente->valor_litro, 2, ',', '.') . '</td>'
                     . '<td style="vertical-align: middle;">R$ ' . number_format($modelCaminhaoCliente->valor_frete, 2, ',', '.') . '</td>'
                     . '<td style="vertical-align: middle;">' . $modelCaminhaoCliente->nota_fiscal . '</td>'
-                    . '<td class="text-bold" style="vertical-align: middle;">R$ ' . number_format($modelCaminhaoCliente->valor_carrada * $modelCaminhaoCliente->valor_frete, 2, ',', '.') . '</td>'
+                    . '<td class="text-bold" style="vertical-align: middle;">R$ ' . number_format(($modelCaminhaoCliente->valor_frete * $modelCaminhaoCliente->valor_carrada), 2, ',', '.') . '</td>'
                     . '</tr>';
 
-            $totalTipoCombustivel[$modelTipoCombustivel->tipo_combustivel_id] += $modelCaminhaoCliente->valor_carrada * $modelCaminhaoCliente->valor_frete;
-            $totalTipoCombustivelGeral[$modelTipoCombustivel->tipo_combustivel_id] += $modelCaminhaoCliente->valor_carrada * $modelCaminhaoCliente->valor_frete;
+            $totalCliente[$modelCliente->cliente_id] += ($modelCaminhaoCliente->valor_frete * $modelCaminhaoCliente->valor_carrada);
+            $totalClienteGeral += ($modelCaminhaoCliente->valor_frete * $modelCaminhaoCliente->valor_carrada);
         }
     }
-    $table .= '<tr><td colspan="8" class="text-bold">Total ' . $modelTipoCombustivel->descricao . ' : R$ ' . number_format($totalTipoCombustivel[$modelTipoCombustivel->tipo_combustivel_id], 2, ',', '.') . '</td></tr>';
+
+    $table .= '<tr><td colspan="7" class="text-bold" style="vertical-align: middle;">Total ' . $modelCliente->nome . ': R$ ' . number_format($totalCliente[$modelCliente->cliente_id], 2, ',', '.') . '</td></tr>';
+
+    $table .= '</tbody>';
+
+    $table .= '</table>';
+
+    $mpdf->WriteHTML($table);
 }
 
-$table .= '</tbody>';
-
-$table .= '</table>';
-
-$mpdf->WriteHTML($table);
-
 $table = '
-<table class="table table-striped table-bordered text-center">
-    <thead>
-        <tr>
-            <td colspan="2" class="text-bold text-uppercase">Total Geral</td>
-        </tr>
-        <tr>
-            <td class="text-bold">Combustível</td>
-            <td class="text-bold">Valor</td>
-        </tr>
-    </thead>
-';
+    <table class="table table-striped table-bordered text-center">
+        <thead>
+            <tr>
+                <td colspan="2" class="text-bold text-uppercase" style="vertical-align: middle;">Resumo Geral</td>
+            </tr>
+            <tr>
+                <td class="text-bold" style="vertical-align: middle;">Cliente</td>
+                <td class="text-bold" style="vertical-align: middle;">Total</td>
+            </tr>
+        </thead>
+    ';
 
 $table .= '<tbody>';
 
-foreach ($modelsTipoCombustivel as $modelTipoCombustivel) {
+foreach ($modelsCliente as $modelCliente) {
     $table .= '<tr>'
-            . '<td>' . $modelTipoCombustivel->descricao . '</td>'
-            . '<td class="text-bold">R$ ' . number_format($totalTipoCombustivelGeral[$modelTipoCombustivel->tipo_combustivel_id], 2, ',', '.') . '</td>'
+            . '<td>' . $modelCliente->nome . '</td>'
+            . '<td class="text-bold" style="vertical-align: middle;">R$ ' . number_format($totalCliente[$modelCliente->cliente_id], 2, ',', '.') . '</td>'
             . '</tr>';
-    $totalGeral += $totalTipoCombustivelGeral[$modelTipoCombustivel->tipo_combustivel_id];
 }
 
-$table .= '<tr><td colspan="2" class="text-bold">Total: R$ ' . number_format($totalGeral, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="2" class="text-bold" style="vertical-align: middle;">Total Geral: R$ ' . number_format($totalClienteGeral, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 

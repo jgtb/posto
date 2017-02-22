@@ -14,7 +14,7 @@ $mpdf->WriteHTML($css, 1);
 
 $mpdf->SetTitle('Relatorio #Despesas Posto');
 
-$mpdf->WriteHTML('<h2 class="text-center">Relatório de Despesas Posto</h2>');
+$mpdf->WriteHTML('<h2 class="text-center">Relatório #Despesas</h2>');
 
 $mpdf->WriteHTML('<h3 class="text-center">Posto #' . Yii::$app->user->identity->getPosto() . '</h3>');
 
@@ -66,7 +66,7 @@ foreach ($modelsTipoDespesa as $modelTipoDespesa) {
         }
     }
 
-    $table .= '<tr><td colspan="4" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalTipoDespesa[$modelTipoDespesa->tipo_despesa_id], 2, ',', '.') . '</td></tr>';
+    $table .= '<tr><td colspan="4" class="text-bold" style="vertical-align: middle;">Total ' . $modelTipoDespesa->descricao . ': R$ ' . number_format($totalTipoDespesa[$modelTipoDespesa->tipo_despesa_id], 2, ',', '.') . '</td></tr>';
 
     $table .= '</tbody>';
 
@@ -79,7 +79,7 @@ $table = '
 <table class="table table-striped table-bordered text-center">
     <thead>
         <tr>
-            <td colspan="2" class="text-bold text-uppercase" style="vertical-align: middle;">Total Geral</td>
+            <td colspan="2" class="text-bold text-uppercase" style="vertical-align: middle;">Resumo Geral</td>
         </tr>
         <tr>
             <td class="text-bold" style="vertical-align: middle;">Categoria</td>
@@ -97,7 +97,7 @@ foreach ($modelsTipoDespesa as $modelTipoDespesa) {
             . '</tr>';
 }
 
-$table .= '<tr><td colspan="2" class="text-bold" style="vertical-align: middle;">Total: R$ ' . number_format($totalGeral, 2, ',', '.') . '</td></tr>';
+$table .= '<tr><td colspan="2" class="text-bold" style="vertical-align: middle;">Total Geral: R$ ' . number_format($totalGeral, 2, ',', '.') . '</td></tr>';
 
 $table .= '</tbody>';
 
