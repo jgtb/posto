@@ -108,7 +108,7 @@ class SiteController extends Controller {
 
         $modelUsuario->save();
 
-        Yii::$app->session->setFlash('success', ['body' => $id != 0 ? 'Você está gerenciando o posto #' . Posto::findOne(['posto_id' => $id])->descricao : 'Você está gerenciando #Carro Tanque']);
+        Yii::$app->session->setFlash('success', ['body' => $id != 0 ? 'Você está gerenciando o Posto #' . Posto::findOne(['posto_id' => $id])->descricao : 'Você está gerenciando #Carro Tanque']);
         return $this->redirect(['index']);
     }
 
