@@ -20,8 +20,10 @@ class ProdutoNegociacaoSearch extends ProdutoNegociacao {
     }
 
     public function search($params, $id) {
-        $query = ProdutoNegociacao::find()->where(['negociacao_id' => $id, 'posto_id' => Yii::$app->user->identity->posto_id, 'produto_negociacao.status' => [1, 2]]);
-        $query->joinWith('produto');
+        $query = ProdutoNegociacao::find()
+                ->joinWith('produto')
+                ->where(['negociacao_id' => $id, 'posto_id' => Yii::$app->user->identity->posto_id, 'produto_negociacao.status' => [1, 2]])
+                ->orderBy(['produto_negociacao.produto_negociacao_id' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -49,11 +51,11 @@ class ProdutoNegociacaoSearch extends ProdutoNegociacao {
             $query->andFilterWhere(['=', 'data', date('Y-m-d', strtotime(str_replace('/', '-', $this->data)))]);
 
         $query->andFilterWhere(['like', 'produto.descricao', $this->produto_id])
-                ->andFilterWhere(['like', 'valor', $this->valor])
-                ->andFilterWhere(['like', 'qtde', $this->qtde])
-                ->andFilterWhere(['like', 'observacao', $this->observacao])
-                ->andFilterWhere(['like', 'status', $this->status])
-                ->andFilterWhere(['like', 'nota_fiscal', $this->nota_fiscal]);
+                ->andFilterWhere(['like', 'produto_negociacao.valor', $this->valor])
+                ->andFilterWhere(['like', 'produto_negociacao.qtde', $this->qtde])
+                ->andFilterWhere(['like', 'produto_negociacao.observacao', $this->observacao])
+                ->andFilterWhere(['like', 'produto_negociacao.status', $this->status])
+                ->andFilterWhere(['like', 'produto_negociacao.nota_fiscal', $this->nota_fiscal]);
 
         return $dataProvider;
     }
