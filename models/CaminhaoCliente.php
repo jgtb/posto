@@ -12,7 +12,7 @@ class CaminhaoCliente extends \yii\db\ActiveRecord {
 
     public function rules() {
         return [
-            [['caminhao_id', 'cliente_id', 'tipo_combustivel_id', 'produto_negociacao_id', 'valor_litro', 'valor_carrada', 'valor_frete', 'nota_fiscal', 'data', 'status'], 'required', 'on' => ['create', 'update'], 'message' => 'Campo obrigatório'],
+            [['caminhao_id', 'cliente_id', 'tipo_combustivel_id', 'valor_litro', 'valor_carrada', 'valor_frete', 'nota_fiscal', 'data', 'status'], 'required', 'on' => ['create', 'update'], 'message' => 'Campo obrigatório'],
             [['caminhao_id', 'cliente_id', 'tipo_combustivel_id', 'produto_negociacao_id', 'valor_carrada', 'status'], 'integer', 'on' => ['create', 'update']],
             [['valor_carrada'], 'compare', 'compareValue' => (int) ValorSaida::find()->where(['produto_negociacao_id' => $this->produto_negociacao_id])->sum('valor'), 'operator' => '>=', 'on' => ['update'], 'message' => 'Limite de #' . (int) ValorSaida::find()->where(['produto_negociacao_id' => $this->produto_negociacao_id])->sum('valor') . ''],
             [['valor_litro'], 'number', 'on' => ['create', 'update']],
