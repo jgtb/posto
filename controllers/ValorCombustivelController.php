@@ -48,7 +48,7 @@ class ValorCombustivelController extends Controller {
         $this->layout = Yii::$app->user->identity->posto_id != 0 ? 'main' : 'caminhao';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', ['body' => 'Preço alterado com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => 'Manutenção alterada com sucesso']);
             return $this->redirect(['update', 'id' => $model->valor_combustivel_id]);
         } else {
             return $this->render('update', [

@@ -98,7 +98,7 @@ class CaminhaoClienteController extends Controller {
             $model->produto_negociacao_id = in_array($model->cliente_id, [1, 2]) ? $modelProdutoNegociacao->produto_negociacao_id : 0;
             $model->save();
 
-            Yii::$app->session->setFlash('success', ['body' => 'Aluguel registrado com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => 'Aluguel registrado com sucesso']);
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -136,7 +136,7 @@ class CaminhaoClienteController extends Controller {
                 $modelDespesa->save();
             }
 
-            Yii::$app->session->setFlash('success', ['body' => 'Aluguel alterado com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => 'Aluguel alterado com sucesso']);
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
@@ -152,7 +152,7 @@ class CaminhaoClienteController extends Controller {
 
         if ($model->produto_negociacao_id != 0) {
             if ($modelProdutoNegociacao->checaEstoqueDeleteCompra()) {
-                Yii::$app->session->setFlash('success', ['body' => 'Aluguel excluído com sucesso!']);
+                Yii::$app->session->setFlash('success', ['body' => 'Aluguel excluído com sucesso']);
                 $model->status = 0;
                 $model->save();
                 $modelProdutoNegociacao->status = 0;
@@ -160,7 +160,7 @@ class CaminhaoClienteController extends Controller {
                 $modelDespesa->status = 0;
                 $modelDespesa->save();
             } else {
-                Yii::$app->session->setFlash('danger', ['body' => 'Não foi possível excluír este Aluguel, existe uma Compra associada e ja houve Saída!']);
+                Yii::$app->session->setFlash('danger', ['body' => 'Não foi possível excluír este Aluguel. Existe uma Compra associada a este Aluguel e houve Saída']);
             }
         } else {
             $model->status = 0;

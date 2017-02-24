@@ -110,7 +110,7 @@ class ProdutoNegociacaoController extends Controller {
                 $modelDespesa->save();
             }
 
-            Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' registrada com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' registrada com sucesso']);
             return $this->redirect(['index', 'id' => $model->negociacao_id]);
         } else {
             return $this->render('create', [
@@ -150,7 +150,7 @@ class ProdutoNegociacaoController extends Controller {
                 $modelDespesa->save();
             }
 
-            Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' alterada com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => '' . substr($model->negociacao->descricao, 0, -1) . ' alterada com sucesso']);
             return $this->redirect(['index', 'id' => $model->negociacao_id]);
         } else {
             return $this->render('update', [
@@ -174,7 +174,7 @@ class ProdutoNegociacaoController extends Controller {
                 $modelDespesa->status = 0;
                 $modelDespesa->save();
             } else {
-                Yii::$app->session->setFlash('danger', ['body' => 'Não foi possível excluír esta ' . substr($model->negociacao->descricao, 0, -1) . ', já houve Saída']);
+                Yii::$app->session->setFlash('danger', ['body' => 'Não foi possível excluír esta ' . substr($model->negociacao->descricao, 0, -1) . '. Houve Saída']);
             }
         } else {
             $model->status = 0;

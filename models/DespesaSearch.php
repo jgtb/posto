@@ -40,6 +40,9 @@ class DespesaSearch extends Despesa {
                     'data_pagamento',
                     'observacao',
                 ]
+            ],
+            'pagination' => [
+                'pageSize' => 5000
             ]
         ]);
 

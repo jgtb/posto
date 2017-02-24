@@ -62,7 +62,7 @@ class TipoDespesaController extends Controller {
         $this->layout = Yii::$app->user->identity->posto_id != 0 ? 'main' : 'caminhao';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', ['body' => 'Categoria registrada com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => 'Categoria registrada com sucesso']);
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -77,7 +77,7 @@ class TipoDespesaController extends Controller {
         $this->layout = Yii::$app->user->identity->posto_id != 0 ? 'main' : 'caminhao';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', ['body' => 'Categoria alterada com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => 'Categoria alterada com sucesso']);
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
@@ -91,7 +91,7 @@ class TipoDespesaController extends Controller {
         $model->status = 0;
         $model->save();
 
-        Yii::$app->session->setFlash('success', ['body' => 'Categoria excluída com sucesso!']);
+        Yii::$app->session->setFlash('success', ['body' => 'Categoria excluída com sucesso']);
         return $this->redirect(['index']);
     }
 

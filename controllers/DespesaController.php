@@ -77,7 +77,7 @@ class DespesaController extends Controller {
             $model->data_pagamento = $model->data_pagamento != NULL ? date('Y-m-d', strtotime(str_replace('/', '-', $model->data_vencimento))) : NULL;
             $model->save();
 
-            Yii::$app->session->setFlash('success', ['body' => 'Despesa registrada com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => 'Despesa registrada com sucesso']);
             return $this->redirect(['index', 'id' => $model->referencial]);
         } else {
             return $this->render('create', [
@@ -99,7 +99,7 @@ class DespesaController extends Controller {
             $model->data_pagamento = $model->data_pagamento != NULL ? date('Y-m-d', strtotime(str_replace('/', '-', $model->data_pagamento))) : NULL;
             $model->save();
 
-            Yii::$app->session->setFlash('success', ['body' => 'Despesa alterada com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => 'Despesa alterada com sucesso']);
             return $this->redirect(['index', 'id' => $model->referencial]);
         } else {
             return $this->render('update', [
@@ -113,7 +113,7 @@ class DespesaController extends Controller {
         $model->status = 0;
         $model->save();
 
-        Yii::$app->session->setFlash('success', ['body' => 'Despesa excluída com sucesso!']);
+        Yii::$app->session->setFlash('success', ['body' => 'Despesa excluída com sucesso']);
         return $this->redirect(['index']);
     }
 

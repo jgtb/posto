@@ -49,7 +49,7 @@ class CaminhaoClienteSearch extends CaminhaoCliente {
         if (!$this->validate()) {
             return $dataProvider;
         }
-        
+
         if ($this->data)
             $query->andFilterWhere(['=', 'data', date('Y-m-d', strtotime(str_replace('/', '-', $this->data)))]);
 

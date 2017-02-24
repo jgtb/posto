@@ -102,7 +102,7 @@ class RegistroController extends Controller {
                 }
             }
 
-            Yii::$app->session->setFlash('success', ['body' => 'Registro registrado com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => 'Registro registrado com sucesso']);
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -126,7 +126,7 @@ class RegistroController extends Controller {
             $model->data = date('Y-m-d', strtotime(str_replace('/', '-', $model->data)));
             $model->save();
             
-            Yii::$app->session->setFlash('success', ['body' => 'Registro alterado com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => 'Registro alterado com sucesso']);
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
@@ -165,7 +165,7 @@ class RegistroController extends Controller {
                 }
             }
 
-            Yii::$app->session->setFlash('success', ['body' => 'Retorno registrado com sucesso!']);
+            Yii::$app->session->setFlash('success', ['body' => 'Retorno registrado com sucesso']);
             return $this->redirect(['index']);
         } else {
             return $this->render('retorno', [
