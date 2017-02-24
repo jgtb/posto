@@ -43,7 +43,7 @@ Yii::$app->user->identity->posto_id != 0 ?
                     ?>
 
                     <div class="form-group">
-                        <?= Html::submitButton('Emitir', ['class' => 'btn btn-primary', 'formtarget']) ?>
+                        <?= Html::submitButton('Emitir', ['class' => 'btn btn-primary']) ?>
                     </div>
 
                     <?php ActiveForm::end(); ?>
