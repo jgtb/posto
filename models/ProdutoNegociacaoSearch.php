@@ -38,9 +38,6 @@ class ProdutoNegociacaoSearch extends ProdutoNegociacao {
                     'status',
                     'data',
                 ]
-            ],
-            'pagination' => [
-                'pageSize' => 5000
             ]
         ]);
 

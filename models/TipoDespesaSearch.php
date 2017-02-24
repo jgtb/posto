@@ -7,23 +7,19 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\TipoDespesa;
 
-class TipoDespesaSearch extends TipoDespesa
-{
-    
-    public function rules()
-    {
+class TipoDespesaSearch extends TipoDespesa {
+
+    public function rules() {
         return [
             [['descricao'], 'safe'],
         ];
     }
 
-    public function scenarios()
-    {
+    public function scenarios() {
         return Model::scenarios();
     }
 
-    public function search($params)
-    {
+    public function search($params) {
         $query = TipoDespesa::find()->where(['status' => 1]);
 
         $dataProvider = new ActiveDataProvider([
@@ -40,4 +36,5 @@ class TipoDespesaSearch extends TipoDespesa
 
         return $dataProvider;
     }
+
 }

@@ -33,6 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'condensed' => true,
         'responsive' => true,
         'hover' => false,
+        'pager' => [
+            'linkOptions' => ['data-pjax' => 0]
+        ],
         'emptyText' => 'Nenhum resultado encontrado.',
         'columns' => [
             ['attribute' => 'produto_id', 'value' => function ($model) {
