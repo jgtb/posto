@@ -3,7 +3,8 @@
 use yii\helpers\Html;
 
 $this->title = 'Alterar ' . $model->tipoUsuario->descricao_singular . ': ' . $model->nome;
-$this->params['breadcrumbs'][] = $model->nome;
+$this->params['breadcrumbs'][] = ['label' => $model->nome, 'url' => ['view', 'id' => $model->usuario_id]];
+$this->params['breadcrumbs'][] = 'Alterar';
 ?>
 <div class="usuario-update">
 

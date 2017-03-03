@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
+use app\models\Registro;
 use app\models\BicoRegistro;
 ?>
 
@@ -37,6 +38,7 @@ use app\models\BicoRegistro;
             'todayHighlight' => true,
             'format' => 'dd/mm/yyyy',
             'autoclose' => true,
+            'startDate' => date('d/m/Y', strtotime(Registro::find()->where(['posto_id' => Yii::$app->user->identity->posto_id])->orderBy(['registro_id' => SORT_DESC])->one()->data . ' +1 day')),
         ],
     ])
     ?>
@@ -79,12 +81,6 @@ use app\models\BicoRegistro;
                 </div>
             </div>
         <?php endforeach; ?>
-    <?php endif; ?>
-
-    <?php if ($model->isNewRecord) : ?>
-        <div class="alert alert-warning text-uppercase text-center">
-            Certifique-se de que todos os Bicos estão registrados
-        </div>
     <?php endif; ?>
 
     <div class="form-group">

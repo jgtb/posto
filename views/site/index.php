@@ -8,7 +8,7 @@ use kartik\grid\GridView;
 $this->title = Yii::$app->user->identity->posto_id != 0 ? Yii::$app->user->identity->getPosto() : 'Carro Tanque';
 ?>
 <div class="site-index">
-
+    
     <?php if (Yii::$app->user->identity->posto_id != 0) : ?>
         <div class="text-center text-uppercase">
             <h3>Você está gerenciando Posto #<?= Yii::$app->user->identity->getPosto() ?></h3>
