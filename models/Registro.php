@@ -93,21 +93,47 @@ class Registro extends \yii\db\ActiveRecord {
     }
 
     public function deleteRegistros() {
+        $backup = '';
+        
         $modelsRegistro = Registro::find()
                 ->where(['>=', 'registro_id', $this->registro_id])
                 ->andWhere(['posto_id' => $this->posto_id])
                 ->all();
+        
+        $backup .= '<h4 class="modal-title" style="margin-bottom: 15px;">Realizado no dia ' . date('d/m/Y', strtotime($this->data_sistema)) . ' ás ' . date('H:i', strtotime($this->data_sistema)) . '</h4>';
+        
         foreach ($modelsRegistro as $modelRegistro) {
+            $backup .= '<table class="table table-striped table-bordered text-center">';
+            $backup .= '<thead>';
+            $backup .= '<tr><td colspan="8" class="text-bold text-uppercase">' . date('d/m/Y', strtotime($modelRegistro->data)) . '</td></tr>';
+            $backup .= '<tr><td class="text-bold" style="vertical-align: middle;">Bomba</td><td class="text-bold" style="vertical-align: middle;">Bico</td><td class="text-bold" style="vertical-align: middle;">Produto</td><td class="text-bold" style="vertical-align: middle;">Valor #Litro</td><td class="text-bold" style="vertical-align: middle;">Registro Anterior</td><td class="text-bold" style="vertical-align: middle;">Registro Atual</td><td class="text-bold" style="vertical-align: middle;">Retorno</td><td class="text-bold" style="vertical-align: middle;">Quantidade #Litro</td></tr>';
+            $backup .= '</thead>';
+            $backup .= '<tbody>';
             $modelsBicoRegistro = BicoRegistro::findAll(['registro_id' => $modelRegistro->registro_id]);
             foreach ($modelsBicoRegistro as $modelBicoRegistro) {
+                $backup .= '<tr><td>' . $modelBicoRegistro->bico->bomba->descricao . '</td><td>' . $modelBicoRegistro->bico->descricao . '</td><td>' . $modelBicoRegistro->bico->tipoCombustivel->descricao . '</td><td>R$ ' . number_format($modelBicoRegistro->valor, 2, ',', '.') . '</td><td>' . number_format($modelBicoRegistro->registro_anterior, 0, '.', '.') . '</td><td>' . number_format($modelBicoRegistro->registro_atual, 0, '.', '.') . '</td><td>' . number_format($modelBicoRegistro->retorno, 0, '.', '.') . '</td><td>' . number_format((($modelBicoRegistro->registro_atual - $modelBicoRegistro->registro_anterior) - $modelBicoRegistro->retorno), 0, '.', '.')  . '</td></tr>';
                 $modelsValorSaida = ValorSaida::findAll(['bico_registro_id' => $modelBicoRegistro->bico_registro_id]);
                 foreach ($modelsValorSaida as $modelValorSaida) {
                     ValorSaida::findOne(['valor_saida_id' => $modelValorSaida->valor_saida_id])->delete();
                 }
+                $backup .= '</tbody>';
                 BicoRegistro::findOne(['bico_registro_id' => $modelBicoRegistro->bico_registro_id])->delete();
             }
+            $backup .= '</table>';
             Registro::findOne(['registro_id' => $modelRegistro->registro_id])->delete();
         }
+        
+        $modelBackup = new Backup();
+        $modelBackup->posto_id = $this->posto_id;
+        $modelBackup->descricao = $backup;
+        $modelBackup->save();
+        
+    }
+
+    public function getBackup() {
+        $backup = Backup::find()->where(['posto_id' => Yii::$app->user->identity->posto_id])->orderBy(['backup.backup_id' => SORT_DESC])->one()->descricao;
+                
+        return $backup != NULL ? $backup : 'Nenhum resultado encontrado.';
     }
 
 }

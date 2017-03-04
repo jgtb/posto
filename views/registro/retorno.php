@@ -36,10 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="panel-body">
                                     <?= $form->field($modelBicoRegistro, 'retorno')->textInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][retorno]']); ?>
+                                    <?= $form->field($modelBicoRegistro, 'valor', ['options' => ['class' => 'form-group-hidden']])->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][valor]'])->label(false); ?>
+                                    <?= $form->field($modelBicoRegistro, 'registro_anterior', ['options' => ['class' => 'form-group-hidden']])->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][registro_anterior]'])->label(false); ?>
+                                    <?= $form->field($modelBicoRegistro, 'registro_atual', ['options' => ['class' => 'form-group-hidden']])->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][registro_atual]'])->label(false); ?>
                                 </div>
-                                <?= $form->field($modelBicoRegistro, 'valor')->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][valor]'])->label(false); ?>
-                                <?= $form->field($modelBicoRegistro, 'registro_anterior')->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][registro_anterior]'])->label(false); ?>
-                                <?= $form->field($modelBicoRegistro, 'registro_atual')->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][registro_atual]'])->label(false); ?>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>

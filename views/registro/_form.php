@@ -23,7 +23,7 @@ use app\models\BicoRegistro;
                 <div class="col-lg-2"></div>
                 <?php foreach ($estoque as $combustivel => $es) : ?>
                     <div class="col-lg-4">
-                        <?= $combustivel ?> <span id="valor-<?= $combustivel ?>">#<?= $es ?></span>
+                        <?= $combustivel ?> <span id="valor-<?= $combustivel ?>"> #<?= number_format($es, 0, '.', '.') ?></span>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -38,7 +38,7 @@ use app\models\BicoRegistro;
             'todayHighlight' => true,
             'format' => 'dd/mm/yyyy',
             'autoclose' => true,
-            'startDate' => date('d/m/Y', strtotime(Registro::find()->where(['posto_id' => Yii::$app->user->identity->posto_id])->orderBy(['registro_id' => SORT_DESC])->one()->data . ' +1 day')),
+            'startDate' => Registro::find()->where(['posto_id' => Yii::$app->user->identity->posto_id])->orderBy(['registro_id' => SORT_DESC])->one()->data != NULL ? date('d/m/Y', strtotime(Registro::find()->where(['posto_id' => Yii::$app->user->identity->posto_id])->orderBy(['registro_id' => SORT_DESC])->one()->data . ' +1 day')) : '',
         ],
     ])
     ?>
@@ -58,7 +58,7 @@ use app\models\BicoRegistro;
                 </div>
                 <div class="panel-body bico bico-<?= strtolower($modelBicoRegistro->bico->tipoCombustivel->descricao) ?>">    
                     <?php if (!$model->isNewRecord) : ?>
-                        <?= $form->field($modelBicoRegistro, 'bico_registro_id')->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][bico_registro_id]'])->label(false); ?>
+                        <?= $form->field($modelBicoRegistro, 'bico_registro_id', ['options' => ['class' => 'form-group-hidden']])->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][bico_registro_id]'])->label(false); ?>
                     <?php endif; ?>
                     <?=
                     $form->field($modelBicoRegistro, 'registro_anterior')->textInput([
@@ -77,7 +77,7 @@ use app\models\BicoRegistro;
                             ]
                     );
                     ?>
-                    <?= $form->field($modelBicoRegistro, 'retorno')->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][retorno]'])->label(false); ?>
+                    <?= $form->field($modelBicoRegistro, 'retorno', ['options' => ['class' => 'form-group-hidden']])->hiddenInput(['name' => 'BicoRegistro[' . $modelBicoRegistro->bico_id . '][retorno]'])->label(false); ?>
                 </div>
             </div>
         <?php endforeach; ?>
