@@ -115,7 +115,7 @@ class UsuarioController extends Controller {
             $modelPostoUsuario->save();
 
             Yii::$app->session->setFlash('success', ['body' => '' . $model->tipoUsuario->descricao_singular . ' registrado com sucesso!']);
-            return $this->redirect(['index', 'id' => $model->tipo_usuario_id]);
+            return $this->redirect(['view', 'id' => $model->usuario_id]);
         } else {
             return $this->render('create', [
                         'model' => $model,
@@ -131,12 +131,11 @@ class UsuarioController extends Controller {
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            $model->senha = sha1($model->senha);
             $model->hash = $this->hash($model->email);
             $model->save();
 
             Yii::$app->session->setFlash('success', ['body' => '' . $model->tipoUsuario->descricao_singular . ' alterado com sucesso!']);
-            return $this->redirect(['index', 'id' => $model->tipo_usuario_id]);
+            return $this->redirect(['view', 'id' => $model->usuario_id]);
         } else {
             return $this->render('update', [
                         'model' => $model,
