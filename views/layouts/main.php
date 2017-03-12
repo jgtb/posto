@@ -27,7 +27,7 @@ NProgressAsset::register($this);
         <div class="wrap">
             <?php
             NavBar::begin([
-                'brandLabel' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->getPosto() : 'My Company',
+                'brandLabel' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->getPosto() : 'Postos Kleuter',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
@@ -66,7 +66,7 @@ NProgressAsset::register($this);
             <div class="container">
                 <?=
                 Breadcrumbs::widget([
-                    'homeLink' => ['label' => Yii::$app->user->isGuest ? 'My Company' : 'Início', 'url' => ['/site/index']],
+                    'homeLink' => ['label' => Yii::$app->user->isGuest ? 'Postos Kleuter' : 'Início', 'url' => ['/site/index']],
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ])
                 ?>
@@ -94,9 +94,9 @@ NProgressAsset::register($this);
 
         <footer class="footer">
             <div class="container">
-                <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+                <p class="pull-left">&copy; Postos Kleuter</p>
 
-                <p class="pull-right">Powered by Yii Framework</p>
+                <p class="pull-right"><?= date('Y') ?></p>
             </div>
         </footer>
 

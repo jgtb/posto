@@ -16,7 +16,7 @@ class ProdutoNegociacao extends \yii\db\ActiveRecord {
         return [
             [['posto_id', 'produto_id', 'negociacao_id', 'valor', 'valor_frete', 'qtde', 'nota_fiscal', 'data'], 'required', 'on' => ['create', 'update'], 'message' => 'Campo obrigatório'],
             [['produto_id', 'negociacao_id', 'qtde', 'status'], 'integer'],
-            [['qtde'], 'compare', 'compareValue' => (int) ValorSaida::find()->where(['produto_negociacao_id' => $this->produto_negociacao_id])->sum('valor'), 'operator' => '>=', 'on' => ['update'], 'message' => 'Limite de #' . (int) ValorSaida::find()->where(['produto_negociacao_id' => $this->produto_negociacao_id])->sum('valor') . ''],
+            [['qtde'], 'compare', 'compareValue' => (double) ValorSaida::find()->where(['produto_negociacao_id' => $this->produto_negociacao_id])->sum('valor'), 'operator' => '>=', 'on' => ['update'], 'message' => 'Limite de #' . (double) ValorSaida::find()->where(['produto_negociacao_id' => $this->produto_negociacao_id])->sum('valor') . ''],
             [['valor'], 'number', 'on' => ['create', 'update']],
             [['nota_fiscal'], 'string', 'max' => 225, 'on' => ['create', 'update']],
             [['observacao'], 'string', 'max' => 500, 'on' => ['create', 'update']],
