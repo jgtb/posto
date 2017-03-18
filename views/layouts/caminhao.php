@@ -37,19 +37,15 @@ NProgressAsset::register($this);
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
                     ['label' => 'Início', 'url' => ['site/index']],
-                    //['label' => 'Caminhões', 'url' => ['/caminhao'], 'options' => ['class' => Yii::$app->controller->id == 'caminhao' ? 'active' : '']],
-                    //['label' => 'Clientes', 'url' => ['/cliente'], 'options' => ['class' => Yii::$app->controller->id == 'cliente' ? 'active' : '']],
                     ['label' => 'Alugueis', 'url' => ['/caminhao-cliente'], 'options' => ['class' => Yii::$app->controller->id == 'caminhao-cliente' ? 'active' : '']],
                     ['label' => 'Despesa', 'visible' => !Yii::$app->user->isGuest, 'items' => [
                             ['label' => 'Categorias', 'url' => ['/tipo-despesa'], 'options' => ['class' => Yii::$app->controller->id == 'tipo-despesa' ? 'active' : '']],
+                            //['label' => 'Despesas Fixas', 'url' => ['/despesa-fixa', 'id' => 2], 'options' => ['class' => Yii::$app->controller->id == 'despesa-fixa' && $_GET['id'] == 2 ? 'active' : '']],
                             ['label' => 'Despesas', 'url' => ['/despesa', 'id' => 2], 'options' => ['class' => Yii::$app->controller->id == 'despesa' && $_GET['id'] == 2 ? 'active' : '']],
                         ]],
                     ['label' => 'Relatórios', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/relatorio/create']],
                     ['label' => Yii::$app->user->identity->email, 'visible' => !Yii::$app->user->isGuest, 'items' => [
                             ['label' => 'Meu Perfil', 'url' => ['/usuario/view', 'id' => Yii::$app->user->identity->usuario_id]],
-                            //['label' => 'Meus Postos', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/site/meus-postos']],
-                            //['label' => 'Relatórios', 'visible' => Yii::$app->user->identity->tipo_usuario_id == 1, 'url' => ['/relatorio/create']],
-                            //['label' => 'Manutenção', 'visible' => Yii::$app->user->identity->status == 2, 'url' => ['/valor-combustivel/update', 'id' => 1]],
                             ['label' => 'Sair',
                                 'url' => ['/site/logout'],
                                 'linkOptions' => ['data-method' => 'post']
