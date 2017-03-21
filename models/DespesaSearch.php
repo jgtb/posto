@@ -24,11 +24,8 @@ class DespesaSearch extends Despesa {
                 ->joinWith('tipoDespesa')
                 ->orderBy(['despesa.data_vencimento' => SORT_DESC]);
 
-        $id == 1 ? $query->where(['posto_id' => Yii::$app->user->identity->posto_id, 'referencial' => $id]) :
-                        $query->where(['referencial' => $id]);
-
-        $query->andWhere(['despesa.status' => 1]);
-
+        $id == 1 ? $query->where(['posto_id' => Yii::$app->user->identity->posto_id, 'referencial' => $id, 'despesa.status' => 1]) :
+                        $query->where(['referencial' => $id, 'despesa.status' => 1]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -56,8 +53,8 @@ class DespesaSearch extends Despesa {
             $query->andFilterWhere(['=', 'data_pagamento', date('Y-m-d', strtotime(str_replace('/', '-', $this->data_pagamento)))]);
 
         $query->andFilterWhere(['like', 'tipo_despesa.descricao', $this->tipo_despesa_id])
-                ->andFilterWhere(['like', 'valor', $this->valor])
-                ->andFilterWhere(['like', 'observacao', $this->observacao]);
+                ->andFilterWhere(['like', 'despesa.valor', $this->valor])
+                ->andFilterWhere(['like', 'despesa.observacao', $this->observacao]);
 
         return $dataProvider;
     }

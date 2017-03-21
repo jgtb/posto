@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         DetailView::widget([
                             'model' => $model,
                             'attributes' => [
-                                ['attribute' => 'tipo_usuario_id', 'value' => $model->tipoUsuario->descricao_singular],
                                 ['attribute' => 'posto_id', 'visible' => Yii::$app->user->identity->tipo_usuario_id != 1, 'value' => Posto::findOne(['posto_id' => $model->posto_id])->descricao],
                                 'nome',
                                 ['attribute' => 'email', 'label' => 'Login / E-mail', 'value' => $model->email],

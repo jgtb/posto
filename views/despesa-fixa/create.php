@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 $this->title = 'Nova Despesa Fixa';
-$this->params['breadcrumbs'][] = ['label' => 'Despesa Fixas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Despesa Fixas', 'url' => ['index', 'id' => $model->referencial]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="despesa-fixa-create">

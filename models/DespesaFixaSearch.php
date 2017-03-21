@@ -7,29 +7,34 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\DespesaFixa;
 
-class DespesaFixaSearch extends DespesaFixa
-{
+class DespesaFixaSearch extends Despesa {
 
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['despesa_fixa_id', 'posto_id', 'tipo_despesa_id', 'referencial', 'status'], 'integer'],
-            [['valor'], 'number'],
-            [['observacao'], 'safe'],
+            [['tipo_despesa_id', 'valor', 'observacao'], 'safe'],
         ];
     }
 
-    public function scenarios()
-    {
+    public function scenarios() {
         return Model::scenarios();
     }
 
-    public function search($params)
-    {
-        $query = DespesaFixa::find();
+    public function search($params, $id) {
+        $query = DespesaFixa::find()
+                ->joinWith('tipoDespesa');
 
+        $id == 1 ? $query->where(['posto_id' => Yii::$app->user->identity->posto_id, 'referencial' => $id, 'despesa_fixa.status' => 1]) :
+                        $query->where(['referencial' => $id, 'despesa_fixa.status' => 1]);
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'attributes' => [
+                    'tipo_despesa_id' => ['asc' => ['tipo_despesa.descricao' => SORT_ASC], 'desc' => ['tipo_despesa.descricao' => SORT_DESC]],
+                    'valor',
+                    'observacao',
+                ]
+            ]
         ]);
 
         $this->load($params);
@@ -38,8 +43,11 @@ class DespesaFixaSearch extends DespesaFixa
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['like', 'observacao', $this->observacao]);
+        $query->andFilterWhere(['like', 'tipo_despesa.descricao', $this->tipo_despesa_id])
+                ->andFilterWhere(['like', 'valor', $this->valor])
+                ->andFilterWhere(['like', 'observacao', $this->observacao]);
 
         return $dataProvider;
     }
+
 }

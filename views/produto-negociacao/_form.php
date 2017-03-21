@@ -17,6 +17,7 @@ use kartik\money\MaskMoney;
     <?=
     $form->field($model, 'valor')->widget(MaskMoney::classname(), [
         'pluginOptions' => [
+            'precision' => 4,
             'prefix' => 'R$ ',
             'allowNegative' => false,
             'allowZero' => true,

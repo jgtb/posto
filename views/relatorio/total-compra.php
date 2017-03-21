@@ -66,7 +66,7 @@ foreach ($modelsProduto as $modelProduto) {
         if ($modelProduto->produto_id == $modelProdutoNegociacao->produto_id) {
             $observacao = $modelProdutoNegociacao->observacao != NULL ? $modelProdutoNegociacao->observacao : 'Não inserido';
             $table .= '<tr>'
-                    . '<td style="vertical-align: middle;">R$ ' . number_format($modelProdutoNegociacao->valor, 2, ',', '.') . '</td>'
+                    . '<td style="vertical-align: middle;">R$ ' . number_format($modelProdutoNegociacao->valor, 4, ',', '.') . '</td>'
                     . '<td style="vertical-align: middle;">' . number_format($modelProdutoNegociacao->qtde, 0, '.', '.') . '</td>'
                     . '<td style="vertical-align: middle;">' . $modelProdutoNegociacao->nota_fiscal . '</td>'
                     . '<td style="vertical-align: middle;">' . date('d/m/Y', strtotime($modelProdutoNegociacao->data)) . '</td>'

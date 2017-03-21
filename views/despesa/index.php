@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Nova Despesa', ['create', 'id' => $id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Gerar Despesas Fixas', ['despesa-fixa', 'id' => $id], ['class' => 'btn btn-info hidden']) ?>
     </p>
 
     <?php Pjax::begin(['id' => 'pjax-despesa', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST', 'url' => Yii::$app->homeUrl . Yii::$app->controller->id . '?id=' . $id]]); ?>

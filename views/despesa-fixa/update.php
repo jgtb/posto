@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Alterar Despesa Fixa: ' . $model->categoria->descricao;
-$this->params['breadcrumbs'][] = ['label' => 'Despesa Fixas', 'url' => ['index']];
+$this->title = 'Alterar Despesa Fixa: ' . $model->tipoDespesa->descricao;
+$this->params['breadcrumbs'][] = ['label' => 'Despesa Fixas', 'url' => ['index', 'id' => $model->referencial]];
 $this->params['breadcrumbs'][] = 'Alterar';
 ?>
 <div class="despesa-fixa-update">

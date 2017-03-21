@@ -15,7 +15,7 @@ class DespesaFixa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['posto_id', 'tipo_despesa_id'], 'required'],
+            [['posto_id', 'tipo_despesa_id', 'referencial', 'valor', 'status'], 'required', 'message' => 'Campo obrigatório'],
             [['posto_id', 'tipo_despesa_id', 'referencial', 'status'], 'integer'],
             [['valor'], 'number'],
             [['observacao'], 'string', 'max' => 500],
@@ -29,11 +29,11 @@ class DespesaFixa extends \yii\db\ActiveRecord
         return [
             'despesa_fixa_id' => 'Despesa Fixa ID',
             'posto_id' => 'Posto ID',
-            'tipo_despesa_id' => 'Tipo Despesa ID',
+            'tipo_despesa_id' => 'Categoria',
             'referencial' => 'Referencial',
-            'valor' => 'Valor',
-            'observacao' => 'Observacao',
-            'status' => 'Status',
+            'valor' => 'Valor #Total',
+            'observacao' => 'Observações',
+            'status' => 'Situação',
         ];
     }
 
