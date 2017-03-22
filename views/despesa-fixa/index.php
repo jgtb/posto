@@ -5,7 +5,7 @@ use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use kartik\money\MaskMoney;
 
-$this->title = 'Despesa Fixas';
+$this->title = 'Despesas Fixas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="despesa-fixa-index">
