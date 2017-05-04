@@ -26,7 +26,7 @@ class ValorCombustivelController extends Controller {
                 'rules' => [
                     [
                         'actions' => ['update'],
-                        'allow' => Yii::$app->user->identity->status == 2 && $this->allowID(),
+                        'allow' => Yii::$app->user->identity->usuario_id == 1 && $this->allowID(),
                         'roles' => ['@'],
                     ],
                 ],

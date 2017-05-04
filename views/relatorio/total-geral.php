@@ -250,7 +250,7 @@ $table = '
 $table .= '<tbody>';
 
 foreach ($modelsDespesaGeral as $modelDespesaGeral) {
-    $totalTipoDespesa = Despesa::find()->where(['between', 'data_vencimento', $model->data_inicial, $model->data_final])->andWhere(['tipo_despesa_id' => $modelDespesaGeral->tipo_despesa_id, 'posto_id' => Yii::$app->user->identity->posto_id, 'status' => 1])->sum('valor');
+    $totalTipoDespesa = Despesa::find()->where(['between', 'data_vencimento', $model->data_inicial, $model->data_final])->andWhere(['tipo_despesa_id' => $modelDespesaGeral->tipo_despesa_id, 'posto_id' => Yii::$app->user->identity->posto_id, 'referencial' => 1, 'status' => 1])->sum('valor');
     $table .= '<tr>'
             . '<td style="vertical-align: middle;">' . $modelDespesaGeral->descricao . '</td>'
             . '<td class="text-bold" style="vertical-align: middle;">R$ ' . number_format($totalTipoDespesa, 2, ',', '.') . '</td>'
