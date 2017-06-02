@@ -28,11 +28,13 @@ $mpdf->WriteHTML('<h5 class="text-center">Até: ' . date('d/m/Y', strtotime($mod
 $modelsCliente = Cliente::find()
         ->leftJoin('caminhao_cliente', 'cliente.cliente_id = caminhao_cliente.cliente_id')
         ->where(['between', 'caminhao_cliente.data', $model->data_inicial, $model->data_final])
+        ->andWhere(['caminhao_cliente.status' => 1])
         ->orderBy(['caminhao_cliente.data' => SORT_DESC])
         ->all();
 
 $modelsCaminhaoCliente = CaminhaoCliente::find()
         ->where(['between', 'caminhao_cliente.data', $model->data_inicial, $model->data_final])
+        ->andWhere(['caminhao_cliente.status' => 1])
         ->orderBy(['caminhao_cliente.data' => SORT_DESC])
         ->all();
 
