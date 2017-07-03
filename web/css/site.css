@@ -185,6 +185,15 @@ and (max-device-width : 480px) { .table > thead { display: none; }}
     display: none;
 }
 
+.panel-relatorio-title {
+    margin: auto;
+    margin-bottom: 20px;
+}
+
 .panel-no-margin {
     margin-bottom: 0px;
+}
+
+.panel-md {
+    height: 50px;
 }

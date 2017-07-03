@@ -14,7 +14,7 @@ class Relatorio extends \yii\db\ActiveRecord {
 
     public function rules() {
         return [
-            [['referencial', 'data'], 'required', 'message' => 'Campo Obrigatório'],
+            [['referencial', 'data'], 'required', 'message' => 'Campo obrigatório'],
             [['referencial'], 'integer'],
             [['data_inicial', 'data_final'], 'safe'],
         ];

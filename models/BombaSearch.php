@@ -29,11 +29,9 @@ class BombaSearch extends Bomba {
                         . 'bico.descricao as bicoDescricao, '
                         . 'bico.tipo_combustivel_id as bicoTipoCombustivelID, '
                         . 'bico.status as bicoStatus')
-                ->leftJoin('bico', 'bomba.bomba_id = bico.bomba_id')
+                ->leftJoin('bico', 'bomba.bomba_id = bico.bomba_id and bico.status = 1')
                 ->where(['bomba.posto_id' => Yii::$app->user->identity->posto_id])
                 ->andWhere(['bomba.status' => 1])
-                //->andWhere(['bico.status' => 1])
-                //->andWhere(['IN', 'bico.status', [1, NULL]])
                 ->orderBy(['bomba.descricao' => SORT_ASC, 'bico.descricao' => SORT_ASC]);
 
         $dataProvider = new ActiveDataProvider([
