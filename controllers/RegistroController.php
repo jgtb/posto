@@ -73,7 +73,7 @@ class RegistroController extends Controller {
 
         $modelsBico = Bico::find()
                         ->joinWith('bomba')
-                        ->where(['bomba.posto_id' => $model->posto_id, 'bomba.status' => 1])->all();
+                        ->where(['bomba.posto_id' => $model->posto_id, 'bico.status' => 1, 'bomba.status' => 1])->all();
 
         foreach ($modelsBico as $index => $modelBico) {
             $modelsBicoRegistro[$index] = new BicoRegistro();
